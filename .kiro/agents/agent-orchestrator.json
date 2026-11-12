@@ -1,0 +1,29 @@
+{
+  "name": "agent-orchestrator",
+  "description": "Orchestrates the ITera Agent Suite: decomposes any development request, routes each task to the right specialist agent, and consolidates the results.",
+  "prompt": "file://./agent-orchestrator/agent.md",
+  "tools": [
+    "read",
+    "write",
+    "shell",
+    "web",
+    "subagent"
+  ],
+  "includeMcpJson": false,
+  "resources": [
+    "file://README.md",
+    "file://.kiro/steering/**/*.md",
+    "skill://.kiro/skills/**/SKILL.md"
+  ],
+  "permissions": {
+    "rules": [
+      {"capability": "fs_write", "match": ["docs/**", "reports/**"], "effect": "allow"},
+      {"capability": "fs_read", "match": ["**/.env", "**/.env.*", "~/.aws/**", "**/.aws/**", "~/.ssh/**", "**/.ssh/**", "**/*.pem", "**/*.key", "**/id_rsa*", "**/id_ed25519*", "**/*.tfstate", "**/*.tfstate.*", "**/credentials.json", "**/*.p12", "**/*.pfx"], "exclude": ["**/.env.example", "**/.env.sample", "**/.env.template"], "effect": "deny"},
+      {"capability": "shell", "match": ["git status*", "git diff*", "git log*", "git show*", "git blame*", "git branch*", "git ls-files*", "git grep *"], "effect": "allow"},
+      {"capability": "shell", "match": ["git add*", "git commit*", "git checkout *", "git switch *", "git stash*", "git merge*", "git rebase*", "git push*"], "effect": "ask"},
+      {"capability": "shell", "match": ["rm -rf *", "sudo *", "chmod -R 777*", "curl * | sh*", "curl * | bash*", "wget * | sh*", "terraform apply*", "terraform destroy*", "terraform import*", "terraform state rm*", "kubectl delete *", "kubectl get secret*", "kubectl describe secret*", "helm uninstall*", "git push --force*", "git push -f*", "git reset --hard*", "git clean -f*", "aws * delete-*", "aws * terminate-*", "aws s3 rm*", "aws s3 rb*", "aws secretsmanager get-secret-value*", "aws ssm get-parameter*", "docker push*", "docker system prune*", "npm publish*"], "effect": "deny"},
+      {"capability": "subagent", "match": ["accessibility", "api-design", "aws-best-practices", "cloud-security", "code-reviewer", "container-best-practices", "container-reviewer", "dast-security", "data-engineering", "database-engineering", "debugging-troubleshooting", "dev-best-practices", "dev-documentation", "devops-reviewer", "devsecops-reviewer", "finops-cost-optimization", "frontend-engineering", "genai-aws-practices", "iac-reviewer", "kubernetes-best-practices", "kubernetes-security", "least-privilege", "mobile-engineering", "observability-sre", "pentest-security", "performance-engineering", "privacy-compliance", "refactoring-modernization", "release-management", "requirements-analyst", "sast-security", "secure-development", "security-audit", "security-tester", "software-architect", "test-automation", "yaml-best-practices"], "effect": "allow"}
+    ]
+  },
+  "welcomeMessage": "Listo. Cuéntame el objetivo y armo el plan con los agentes adecuados."
+}
