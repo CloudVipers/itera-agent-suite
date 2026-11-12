@@ -1,14 +1,21 @@
 # ITera Agent Suite
 
-> **20 agentes especializados para revisión de código, seguridad, DevOps y buenas prácticas en la nube.**
+> **38 agentes especializados para todo el ciclo de desarrollo: requerimientos, arquitectura, construcción, calidad, seguridad, DevOps y operación en la nube — coordinados por un agente orquestador.**
 > Compatibles con Kiro IDE y Claude (web/API/Projects).
 
 **Creado por**: Stiven Avila | **Organización**: ITera
-**Versión**: 1.0.0 | **Fecha**: 2026-08-21
+**Versión**: 2.0.0 | **Fecha**: 2026-11-12
 
 ---
 
 ## Catálogo de Agentes
+
+### Orquestación & Requerimientos
+
+| # | Agente | Descripción | Kiro Path |
+|---|--------|-------------|-----------|
+| 0 | **Agent Orchestrator** | Entiende la solicitud, la divide en tareas, enruta a los agentes correctos y consolida resultados | `.kiro/agents/agent-orchestrator/` |
+| 0.1 | **Requirements Analyst** | Entiende y traduce requerimientos (negocio ↔ técnico, ES ↔ EN): historias, Gherkin, NFRs, preguntas abiertas | `.kiro/agents/requirements-analyst/` |
 
 ### Seguridad
 
@@ -19,6 +26,7 @@
 | 3 | **DAST (Seguridad Dinámica)** | Testing dinámico: headers, sesiones, input fuzzing, APIs | `.kiro/agents/dast-security/` |
 | 4 | **Penetration Testing** | Red team: cadenas de ataque, MITRE ATT&CK, CVSS, PoC | `.kiro/agents/pentest-security/` |
 | 5 | **Auditoría de Seguridad** | Auditoría contra frameworks: ISO 27001, SOC 2, PCI DSS, NIST | `.kiro/agents/security-audit/` |
+| 5.1 | **Security Tester (legacy)** | Testing de seguridad general todo-en-uno; preferir SAST/DAST/Pentest | `.kiro/agents/security-tester/` |
 
 ### Buenas Prácticas
 
@@ -54,6 +62,48 @@
 |---|--------|-------------|-----------|
 | 19 | **Development Documentation** | Documentación técnica: Diátaxis, ADR, API docs, README, changelog | `.kiro/agents/dev-documentation/` |
 | 20 | **GenAI AWS Best Practices** | Bedrock, RAG, agents, guardrails, cost optimization, responsible AI | `.kiro/agents/genai-aws-practices/` |
+
+---
+
+### Arquitectura & Diseño
+
+| # | Agente | Descripción | Kiro Path |
+|---|--------|-------------|-----------|
+| 21 | **Software Architecture** | Estilos de arquitectura, DDD, trade-offs, ADRs, diagramas C4 | `.kiro/agents/software-architect/` |
+| 22 | **API Design** | REST, GraphQL, gRPC, eventos: OpenAPI/AsyncAPI, versionado, seguridad de APIs | `.kiro/agents/api-design/` |
+| 23 | **Database Engineering** | Modelado SQL/NoSQL, índices, planes de ejecución, migraciones sin downtime | `.kiro/agents/database-engineering/` |
+| 24 | **Data Engineering** | Pipelines, lakehouse, streaming, dbt/Airflow/Glue, calidad de datos | `.kiro/agents/data-engineering/` |
+
+### Construcción
+
+| # | Agente | Descripción | Kiro Path |
+|---|--------|-------------|-----------|
+| 25 | **Frontend Engineering** | React/Next/Vue/Angular, estado, Core Web Vitals, seguridad frontend | `.kiro/agents/frontend-engineering/` |
+| 26 | **Mobile Engineering** | iOS, Android, React Native, Flutter, offline-first, OWASP MASVS | `.kiro/agents/mobile-engineering/` |
+| 27 | **Refactoring & Modernization** | Código legacy, deuda técnica, upgrades, migración a la nube (7 Rs) | `.kiro/agents/refactoring-modernization/` |
+
+### Calidad
+
+| # | Agente | Descripción | Kiro Path |
+|---|--------|-------------|-----------|
+| 28 | **Test Automation & QA** | Estrategia de pruebas, unit/integration/contract/E2E, tests inestables | `.kiro/agents/test-automation/` |
+| 29 | **Performance Engineering** | Profiling, pruebas de carga, percentiles, caching | `.kiro/agents/performance-engineering/` |
+| 30 | **Debugging & Troubleshooting** | Causa raíz de errores, stack traces, "funciona aquí pero no allá" | `.kiro/agents/debugging-troubleshooting/` |
+| 31 | **Accessibility (a11y)** | Auditoría y corrección WCAG 2.2 AA, web y móvil | `.kiro/agents/accessibility/` |
+
+### Operación, Entrega & Cumplimiento
+
+| # | Agente | Descripción | Kiro Path |
+|---|--------|-------------|-----------|
+| 32 | **Observability & SRE** | Logs, métricas, trazas (OpenTelemetry), SLOs, alertas, incidentes | `.kiro/agents/observability-sre/` |
+| 33 | **Release Management & Git** | Branching, commits, PRs, SemVer, changelogs, releases, recuperación en Git | `.kiro/agents/release-management/` |
+| 34 | **FinOps & Cost Optimization** | Visibilidad de costos, right-sizing, Savings Plans, diseño consciente del costo | `.kiro/agents/finops-cost-optimization/` |
+| 35 | **Privacy by Design** | Protección de datos: Ley 1581 (Habeas Data), GDPR, LGPD; consentimiento, derechos, retención | `.kiro/agents/privacy-compliance/` |
+
+### ¿Por dónde empezar?
+
+- **No sabes qué agente usar** → `agent-orchestrator`: arma el plan y coordina a los demás.
+- **Tienes un correo, RFP, transcripción o idea suelta** → `requirements-analyst`: lo convierte en requerimientos listos para desarrollo.
 
 ---
 
@@ -98,6 +148,16 @@ Analiza las brechas de seguridad en estos manifiestos: #Folder k8s/production/
 **GenAI:**
 ```
 Revisa la arquitectura RAG que estamos implementando con Bedrock: #File docs/architecture/genai.md
+```
+
+**Orquestador:**
+```
+Necesito llevar a producción esta nueva funcionalidad de pagos. Arma el plan con los agentes necesarios y consolida los hallazgos: #Folder src/payments/
+```
+
+**Requerimientos:**
+```
+Convierte este correo del cliente en historias de usuario con criterios de aceptación en inglés: #File docs/cliente/correo-requerimiento.txt
 ```
 
 ---
@@ -154,30 +214,45 @@ done
 ```
 .
 ├── .kiro/
-│   └── agents/                          # Agentes nativos para Kiro IDE
+│   └── agents/                          # 38 agentes (Kiro IDE y system prompts para Claude)
+│       ├── accessibility/agent.md
+│       ├── agent-orchestrator/agent.md
+│       ├── api-design/agent.md
 │       ├── aws-best-practices/agent.md
 │       ├── cloud-security/agent.md
 │       ├── code-reviewer/agent.md
 │       ├── container-best-practices/agent.md
 │       ├── container-reviewer/agent.md
 │       ├── dast-security/agent.md
+│       ├── data-engineering/agent.md
+│       ├── database-engineering/agent.md
+│       ├── debugging-troubleshooting/agent.md
 │       ├── dev-best-practices/agent.md
 │       ├── dev-documentation/agent.md
 │       ├── devops-reviewer/agent.md
 │       ├── devsecops-reviewer/agent.md
+│       ├── finops-cost-optimization/agent.md
+│       ├── frontend-engineering/agent.md
 │       ├── genai-aws-practices/agent.md
 │       ├── iac-reviewer/agent.md
 │       ├── kubernetes-best-practices/agent.md
 │       ├── kubernetes-security/agent.md
 │       ├── least-privilege/agent.md
+│       ├── mobile-engineering/agent.md
+│       ├── observability-sre/agent.md
 │       ├── pentest-security/agent.md
+│       ├── performance-engineering/agent.md
+│       ├── privacy-compliance/agent.md
+│       ├── refactoring-modernization/agent.md
+│       ├── release-management/agent.md
+│       ├── requirements-analyst/agent.md
 │       ├── sast-security/agent.md
 │       ├── secure-development/agent.md
 │       ├── security-audit/agent.md
+│       ├── security-tester/agent.md
+│       ├── software-architect/agent.md
+│       ├── test-automation/agent.md
 │       └── yaml-best-practices/agent.md
-├── claude/                              # System prompts legacy (Claude web/API)
-│   ├── code-reviewer.md
-│   └── security-tester.md
 └── README.md
 ```
 
@@ -196,6 +271,14 @@ Para un análisis completo, usa múltiples agentes en secuencia:
 | **Review de K8s production** | K8s Best Practices → K8s Security → Container Review → YAML |
 | **Pipeline DevSecOps** | DevOps Review → DevSecOps Review → Container Review |
 | **Proyecto GenAI** | GenAI AWS → Cloud Security → Secure Development |
+| **Funcionalidad nueva de punta a punta** | Requirements Analyst → Software Architecture → API Design ‖ Database → Frontend ‖ Mobile → Test Automation → Code Review → Release Management |
+| **De RFP a plan técnico** | Requirements Analyst → Software Architecture → FinOps → Development Documentation |
+| **Listo para producción** | Code Review ‖ SAST ‖ Test Automation → Performance → Observability & SRE → Release Management |
+| **Modernización de legacy** | Refactoring & Modernization → Software Architecture → Test Automation → AWS Best Practices → FinOps |
+| **Incidente en producción** | Debugging ‖ Observability & SRE → Release Management → Development Documentation |
+| **Cumplimiento de datos personales** | Privacy by Design ‖ Security Audit → Cloud Security → Least Privilege |
+
+> `‖` = en paralelo. El **Agent Orchestrator** conoce estas combinaciones y elige la adecuada según la solicitud.
 
 ---
 
@@ -215,6 +298,12 @@ Los agentes están alineados con:
 - **DORA** Metrics (DevOps Research and Assessment)
 - **12-Factor App** Methodology
 - **CWE** Common Weakness Enumeration
+- **WCAG 2.2** Web Content Accessibility Guidelines
+- **OWASP API Security Top 10** y **OWASP MASVS** (móvil)
+- **ISO/IEC 25010** calidad de software (requerimientos no funcionales)
+- **FinOps Framework** (FinOps Foundation)
+- **OpenTelemetry** y prácticas SRE (SLOs, error budgets)
+- **Ley 1581 de 2012** (Colombia), **GDPR**, **LGPD** — protección de datos personales
 
 ---
 
