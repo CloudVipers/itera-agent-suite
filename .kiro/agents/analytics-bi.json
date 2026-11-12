@@ -1,0 +1,27 @@
+{
+  "name": "analytics-bi",
+  "description": "Defines trustworthy KPIs and semantic models and designs decision-oriented dashboards in QuickSight, Power BI, Looker, Tableau, and Metabase.",
+  "prompt": "file://./analytics-bi/agent.md",
+  "tools": [
+    "read",
+    "write",
+    "shell",
+    "web"
+  ],
+  "includeMcpJson": false,
+  "resources": [
+    "file://README.md",
+    "file://.kiro/steering/**/*.md",
+    "skill://.kiro/skills/**/SKILL.md"
+  ],
+  "permissions": {
+    "rules": [
+      {"capability": "fs_write", "match": ["models/**", "sql/**", "dashboards/**", "semantic/**", "docs/**"], "effect": "allow"},
+      {"capability": "fs_read", "match": ["**/.env", "**/.env.*", "~/.aws/**", "**/.aws/**", "~/.ssh/**", "**/.ssh/**", "**/*.pem", "**/*.key", "**/id_rsa*", "**/id_ed25519*", "**/*.tfstate", "**/*.tfstate.*", "**/credentials.json", "**/*.p12", "**/*.pfx"], "exclude": ["**/.env.example", "**/.env.sample", "**/.env.template"], "effect": "deny"},
+      {"capability": "shell", "match": ["git status*", "git diff*", "git log*", "git show*", "git blame*", "git branch*", "git ls-files*", "git grep *", "dbt compile*", "dbt parse*", "dbt test*", "sqlfluff lint*", "aws quicksight list-*", "aws quicksight describe-*"], "effect": "allow"},
+      {"capability": "shell", "match": ["git add*", "git commit*", "git checkout *", "git switch *", "git stash*", "git merge*", "git rebase*", "git push*", "aws athena start-query-execution*", "bq query*", "dbt run*"], "effect": "ask"},
+      {"capability": "shell", "match": ["rm -rf *", "sudo *", "chmod -R 777*", "curl * | sh*", "curl * | bash*", "wget * | sh*", "terraform apply*", "terraform destroy*", "terraform import*", "terraform state rm*", "kubectl delete *", "kubectl get secret*", "kubectl describe secret*", "helm uninstall*", "git push --force*", "git push -f*", "git reset --hard*", "git clean -f*", "aws * delete-*", "aws * terminate-*", "aws s3 rm*", "aws s3 rb*", "aws secretsmanager get-secret-value*", "aws ssm get-parameter*", "docker push*", "docker system prune*", "npm publish*"], "effect": "deny"}
+    ]
+  },
+  "welcomeMessage": "Listo. Cada métrica con definición precisa y dueño; las consultas pesadas piden confirmación."
+}

@@ -1,0 +1,27 @@
+{
+  "name": "aws-serverless",
+  "description": "Designs, builds, and reviews serverless applications on AWS Lambda, API Gateway, Step Functions, EventBridge, SQS/SNS, and DynamoDB.",
+  "prompt": "file://./aws-serverless/agent.md",
+  "tools": [
+    "read",
+    "write",
+    "shell",
+    "web"
+  ],
+  "includeMcpJson": false,
+  "resources": [
+    "file://README.md",
+    "file://.kiro/steering/**/*.md",
+    "skill://.kiro/skills/**/SKILL.md"
+  ],
+  "permissions": {
+    "rules": [
+      {"capability": "fs_write", "match": ["src/**", "functions/**", "lib/**", "infra/**", "template.yaml", "tests/**", "docs/**"], "effect": "allow"},
+      {"capability": "fs_read", "match": ["**/.env", "**/.env.*", "~/.aws/**", "**/.aws/**", "~/.ssh/**", "**/.ssh/**", "**/*.pem", "**/*.key", "**/id_rsa*", "**/id_ed25519*", "**/*.tfstate", "**/*.tfstate.*", "**/credentials.json", "**/*.p12", "**/*.pfx"], "exclude": ["**/.env.example", "**/.env.sample", "**/.env.template"], "effect": "deny"},
+      {"capability": "shell", "match": ["git status*", "git diff*", "git log*", "git show*", "git blame*", "git branch*", "git ls-files*", "git grep *", "sam validate*", "sam build*", "sam local *", "cdk synth*", "cdk diff*", "cfn-lint*", "aws lambda get-*", "aws lambda list-*", "aws stepfunctions describe-*", "aws stepfunctions list-*", "aws events list-*", "aws events describe-*", "aws sqs get-queue-attributes*", "aws sqs list-*", "npm run lint*", "npm run test*", "npm test*", "npm run build*", "npm run typecheck*", "npx tsc*", "npx eslint*", "npx vitest*", "npx jest*", "pnpm lint*", "pnpm test*", "pnpm build*", "yarn lint*", "yarn test*", "yarn build*", "pytest*", "python -m pytest*", "ruff check*", "mypy *", "terraform fmt -check*", "terraform validate*", "terraform plan*"], "effect": "allow"},
+      {"capability": "shell", "match": ["git add*", "git commit*", "git checkout *", "git switch *", "git stash*", "git merge*", "git rebase*", "git push*", "sam deploy*", "cdk deploy*", "aws lambda invoke*", "aws lambda update-*", "aws sqs send-message*"], "effect": "ask"},
+      {"capability": "shell", "match": ["rm -rf *", "sudo *", "chmod -R 777*", "curl * | sh*", "curl * | bash*", "wget * | sh*", "terraform apply*", "terraform destroy*", "terraform import*", "terraform state rm*", "kubectl delete *", "kubectl get secret*", "kubectl describe secret*", "helm uninstall*", "git push --force*", "git push -f*", "git reset --hard*", "git clean -f*", "aws * delete-*", "aws * terminate-*", "aws s3 rm*", "aws s3 rb*", "aws secretsmanager get-secret-value*", "aws ssm get-parameter*", "docker push*", "docker system prune*", "npm publish*", "sam delete*", "cdk destroy*", "aws cloudformation delete-stack*", "aws sqs purge-queue*"], "effect": "deny"}
+    ]
+  },
+  "welcomeMessage": "Listo. Build, validate y tests locales libres; deploy pide confirmación y borrar stacks está bloqueado."
+}

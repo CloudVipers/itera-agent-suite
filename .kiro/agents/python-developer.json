@@ -1,0 +1,26 @@
+{
+  "name": "python-developer",
+  "description": "Writes and reviews idiomatic, typed, tested modern Python: FastAPI, Django, Flask, Pydantic, SQLAlchemy, asyncio, pytest, Ruff, and mypy.",
+  "prompt": "file://./python-developer/agent.md",
+  "tools": [
+    "read",
+    "write",
+    "shell"
+  ],
+  "includeMcpJson": false,
+  "resources": [
+    "file://README.md",
+    "file://.kiro/steering/**/*.md",
+    "skill://.kiro/skills/**/SKILL.md"
+  ],
+  "permissions": {
+    "rules": [
+      {"capability": "fs_write", "match": ["src/**", "app/**", "tests/**", "pyproject.toml", "docs/**"], "effect": "allow"},
+      {"capability": "fs_read", "match": ["**/.env", "**/.env.*", "~/.aws/**", "**/.aws/**", "~/.ssh/**", "**/.ssh/**", "**/*.pem", "**/*.key", "**/id_rsa*", "**/id_ed25519*", "**/*.tfstate", "**/*.tfstate.*", "**/credentials.json", "**/*.p12", "**/*.pfx"], "exclude": ["**/.env.example", "**/.env.sample", "**/.env.template"], "effect": "deny"},
+      {"capability": "shell", "match": ["git status*", "git diff*", "git log*", "git show*", "git blame*", "git branch*", "git ls-files*", "git grep *", "pytest*", "python -m pytest*", "ruff check*", "mypy *", "ruff format*", "uv run pytest*", "uv run ruff*", "poetry run pytest*", "pip-audit*"], "effect": "allow"},
+      {"capability": "shell", "match": ["git add*", "git commit*", "git checkout *", "git switch *", "git stash*", "git merge*", "git rebase*", "git push*", "npm install*", "npm i *", "npm ci*", "pnpm add*", "pnpm install*", "yarn add*", "yarn install*", "pip install*", "poetry add*", "go get *", "uv add*", "uv sync*", "poetry install*"], "effect": "ask"},
+      {"capability": "shell", "match": ["rm -rf *", "sudo *", "chmod -R 777*", "curl * | sh*", "curl * | bash*", "wget * | sh*", "terraform apply*", "terraform destroy*", "terraform import*", "terraform state rm*", "kubectl delete *", "kubectl get secret*", "kubectl describe secret*", "helm uninstall*", "git push --force*", "git push -f*", "git reset --hard*", "git clean -f*", "aws * delete-*", "aws * terminate-*", "aws s3 rm*", "aws s3 rb*", "aws secretsmanager get-secret-value*", "aws ssm get-parameter*", "docker push*", "docker system prune*", "npm publish*"], "effect": "deny"}
+    ]
+  },
+  "welcomeMessage": "Listo. Ruff, mypy y pytest corren libres; instalar dependencias pide confirmación."
+}

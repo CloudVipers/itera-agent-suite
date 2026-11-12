@@ -1,0 +1,27 @@
+{
+  "name": "incident-response",
+  "description": "Guides security incident response and forensics (DFIR): triage, containment, evidence preservation, eradication, recovery, and post-incident review.",
+  "prompt": "file://./incident-response/agent.md",
+  "tools": [
+    "read",
+    "write",
+    "shell",
+    "web"
+  ],
+  "includeMcpJson": false,
+  "resources": [
+    "file://README.md",
+    "file://.kiro/steering/**/*.md",
+    "skill://.kiro/skills/**/SKILL.md"
+  ],
+  "permissions": {
+    "rules": [
+      {"capability": "fs_write", "match": ["incidents/**", "reports/**", "docs/**"], "effect": "allow"},
+      {"capability": "fs_read", "match": ["**/.env", "**/.env.*", "~/.aws/**", "**/.aws/**", "~/.ssh/**", "**/.ssh/**", "**/*.pem", "**/*.key", "**/id_rsa*", "**/id_ed25519*", "**/*.tfstate", "**/*.tfstate.*", "**/credentials.json", "**/*.p12", "**/*.pfx"], "exclude": ["**/.env.example", "**/.env.sample", "**/.env.template"], "effect": "deny"},
+      {"capability": "shell", "match": ["git status*", "git diff*", "git log*", "git show*", "git blame*", "git branch*", "git ls-files*", "git grep *", "aws cloudtrail lookup-events*", "aws guardduty list-*", "aws guardduty get-*", "aws securityhub get-*", "aws logs start-query*", "aws logs get-query-results*", "aws logs filter-log-events*", "aws iam get-*", "aws iam list-*", "aws sts get-caller-identity*", "kubectl get *", "kubectl describe *", "kubectl top *", "kubectl explain *", "kubectl auth can-i*", "kubectl logs *"], "effect": "allow"},
+      {"capability": "shell", "match": ["git add*", "git commit*", "git checkout *", "git switch *", "git stash*", "git merge*", "git rebase*", "git push*", "aws iam update-access-key*", "aws iam delete-login-profile*", "aws iam put-role-policy*", "aws ec2 modify-instance-attribute*", "aws ec2 create-snapshot*", "aws ec2 stop-instances*", "kubectl cordon *", "kubectl label *"], "effect": "ask"},
+      {"capability": "shell", "match": ["rm -rf *", "sudo *", "chmod -R 777*", "curl * | sh*", "curl * | bash*", "wget * | sh*", "terraform apply*", "terraform destroy*", "terraform import*", "terraform state rm*", "kubectl delete *", "kubectl get secret*", "kubectl describe secret*", "helm uninstall*", "git push --force*", "git push -f*", "git reset --hard*", "git clean -f*", "aws * delete-*", "aws * terminate-*", "aws s3 rm*", "aws s3 rb*", "aws secretsmanager get-secret-value*", "aws ssm get-parameter*", "docker push*", "docker system prune*", "npm publish*"], "effect": "deny"}
+    ]
+  },
+  "welcomeMessage": "Listo. Primero contener y preservar evidencia: cuéntame qué detectaste. Todo comando que cambie algo pide confirmación."
+}

@@ -1,0 +1,27 @@
+{
+  "name": "aws-networking",
+  "description": "Designs and troubleshoots AWS networking: VPC and IPAM, Transit Gateway, Cloud WAN, Direct Connect, VPN, PrivateLink, Route 53, and load balancing.",
+  "prompt": "file://./aws-networking/agent.md",
+  "tools": [
+    "read",
+    "write",
+    "shell",
+    "web"
+  ],
+  "includeMcpJson": false,
+  "resources": [
+    "file://README.md",
+    "file://.kiro/steering/**/*.md",
+    "skill://.kiro/skills/**/SKILL.md"
+  ],
+  "permissions": {
+    "rules": [
+      {"capability": "fs_write", "match": ["infra/**", "terraform/**", "network/**", "docs/**", "reports/**"], "effect": "allow"},
+      {"capability": "fs_read", "match": ["**/.env", "**/.env.*", "~/.aws/**", "**/.aws/**", "~/.ssh/**", "**/.ssh/**", "**/*.pem", "**/*.key", "**/id_rsa*", "**/id_ed25519*", "**/*.tfstate", "**/*.tfstate.*", "**/credentials.json", "**/*.p12", "**/*.pfx"], "exclude": ["**/.env.example", "**/.env.sample", "**/.env.template"], "effect": "deny"},
+      {"capability": "shell", "match": ["git status*", "git diff*", "git log*", "git show*", "git blame*", "git branch*", "git ls-files*", "git grep *", "aws ec2 describe-*", "aws ec2 get-*", "aws ec2 search-transit-gateway-routes*", "aws ec2 start-network-insights-analysis*", "aws networkmanager get-*", "aws networkmanager list-*", "aws directconnect describe-*", "aws route53 list-*", "aws route53 get-*", "aws route53resolver list-*", "aws elbv2 describe-*", "dig *", "nslookup *", "traceroute *", "mtr *", "terraform fmt -check*", "terraform validate*", "terraform plan*"], "effect": "allow"},
+      {"capability": "shell", "match": ["git add*", "git commit*", "git checkout *", "git switch *", "git stash*", "git merge*", "git rebase*", "git push*"], "effect": "ask"},
+      {"capability": "shell", "match": ["rm -rf *", "sudo *", "chmod -R 777*", "curl * | sh*", "curl * | bash*", "wget * | sh*", "terraform apply*", "terraform destroy*", "terraform import*", "terraform state rm*", "kubectl delete *", "kubectl get secret*", "kubectl describe secret*", "helm uninstall*", "git push --force*", "git push -f*", "git reset --hard*", "git clean -f*", "aws * delete-*", "aws * terminate-*", "aws s3 rm*", "aws s3 rb*", "aws secretsmanager get-secret-value*", "aws ssm get-parameter*", "docker push*", "docker system prune*", "npm publish*", "aws ec2 delete-*", "aws ec2 replace-route*", "aws route53 change-resource-record-sets*", "aws directconnect delete-*"], "effect": "deny"}
+    ]
+  },
+  "welcomeMessage": "Listo. Diagnóstico de red en modo lectura: plan sí, apply no."
+}

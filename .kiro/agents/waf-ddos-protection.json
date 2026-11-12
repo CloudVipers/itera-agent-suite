@@ -1,0 +1,27 @@
+{
+  "name": "waf-ddos-protection",
+  "description": "Designs and tunes WAF rules, rate limiting, bot management, and DDoS resilience on AWS WAF/Shield, CloudFront, Cloudflare, Front Door, and Cloud Armor.",
+  "prompt": "file://./waf-ddos-protection/agent.md",
+  "tools": [
+    "read",
+    "write",
+    "shell",
+    "web"
+  ],
+  "includeMcpJson": false,
+  "resources": [
+    "file://README.md",
+    "file://.kiro/steering/**/*.md",
+    "skill://.kiro/skills/**/SKILL.md"
+  ],
+  "permissions": {
+    "rules": [
+      {"capability": "fs_write", "match": ["infra/**", "terraform/**", "docs/**", "reports/**"], "effect": "allow"},
+      {"capability": "fs_read", "match": ["**/.env", "**/.env.*", "~/.aws/**", "**/.aws/**", "~/.ssh/**", "**/.ssh/**", "**/*.pem", "**/*.key", "**/id_rsa*", "**/id_ed25519*", "**/*.tfstate", "**/*.tfstate.*", "**/credentials.json", "**/*.p12", "**/*.pfx"], "exclude": ["**/.env.example", "**/.env.sample", "**/.env.template"], "effect": "deny"},
+      {"capability": "shell", "match": ["git status*", "git diff*", "git log*", "git show*", "git blame*", "git branch*", "git ls-files*", "git grep *", "aws wafv2 list-*", "aws wafv2 get-*", "aws wafv2 describe-*", "aws shield describe-*", "aws shield list-*", "aws cloudfront list-*", "aws cloudfront get-*", "aws logs start-query*", "aws logs get-query-results*", "terraform fmt -check*", "terraform validate*", "terraform plan*"], "effect": "allow"},
+      {"capability": "shell", "match": ["git add*", "git commit*", "git checkout *", "git switch *", "git stash*", "git merge*", "git rebase*", "git push*", "aws wafv2 update-*", "aws wafv2 create-*", "aws wafv2 associate-*"], "effect": "ask"},
+      {"capability": "shell", "match": ["rm -rf *", "sudo *", "chmod -R 777*", "curl * | sh*", "curl * | bash*", "wget * | sh*", "terraform apply*", "terraform destroy*", "terraform import*", "terraform state rm*", "kubectl delete *", "kubectl get secret*", "kubectl describe secret*", "helm uninstall*", "git push --force*", "git push -f*", "git reset --hard*", "git clean -f*", "aws * delete-*", "aws * terminate-*", "aws s3 rm*", "aws s3 rb*", "aws secretsmanager get-secret-value*", "aws ssm get-parameter*", "docker push*", "docker system prune*", "npm publish*"], "effect": "deny"}
+    ]
+  },
+  "welcomeMessage": "Listo. Reglas nuevas siempre primero en modo count; bloquear tráfico real pide confirmación."
+}
