@@ -1,0 +1,26 @@
+{
+  "name": "data-engineering",
+  "description": "Designs and reviews data pipelines, lakehouses, streaming, dbt/Airflow/Glue/Spark jobs, and data quality controls.",
+  "prompt": "file://./data-engineering/agent.md",
+  "tools": [
+    "read",
+    "write",
+    "shell"
+  ],
+  "includeMcpJson": false,
+  "resources": [
+    "file://README.md",
+    "file://.kiro/steering/**/*.md",
+    "skill://.kiro/skills/**/SKILL.md"
+  ],
+  "permissions": {
+    "rules": [
+      {"capability": "fs_write", "match": ["dags/**", "models/**", "pipelines/**", "jobs/**", "glue/**", "sql/**", "tests/**", "docs/**"], "effect": "allow"},
+      {"capability": "fs_read", "match": ["**/.env", "**/.env.*", "~/.aws/**", "**/.aws/**", "~/.ssh/**", "**/.ssh/**", "**/*.pem", "**/*.key", "**/id_rsa*", "**/id_ed25519*", "**/*.tfstate", "**/*.tfstate.*", "**/credentials.json", "**/*.p12", "**/*.pfx"], "exclude": ["**/.env.example", "**/.env.sample", "**/.env.template"], "effect": "deny"},
+      {"capability": "shell", "match": ["git status*", "git diff*", "git log*", "git show*", "git blame*", "git branch*", "git ls-files*", "git grep *", "dbt compile*", "dbt parse*", "dbt ls*", "dbt test*", "sqlfluff lint*", "pytest*", "python -m pytest*", "ruff check*", "mypy *"], "effect": "allow"},
+      {"capability": "shell", "match": ["git add*", "git commit*", "git checkout *", "git switch *", "git stash*", "git merge*", "git rebase*", "git push*", "dbt run*", "dbt build*", "dbt seed*", "aws glue start-job-run*", "airflow dags trigger*", "spark-submit*"], "effect": "ask"},
+      {"capability": "shell", "match": ["rm -rf *", "sudo *", "chmod -R 777*", "curl * | sh*", "curl * | bash*", "wget * | sh*", "terraform apply*", "terraform destroy*", "terraform import*", "terraform state rm*", "kubectl delete *", "kubectl get secret*", "kubectl describe secret*", "helm uninstall*", "git push --force*", "git push -f*", "git reset --hard*", "git clean -f*", "aws * delete-*", "aws * terminate-*", "aws s3 rm*", "aws s3 rb*", "aws secretsmanager get-secret-value*", "aws ssm get-parameter*", "docker push*", "docker system prune*", "npm publish*"], "effect": "deny"}
+    ]
+  },
+  "welcomeMessage": "Listo. Revisamos pipelines, modelos y calidad de datos; las ejecuciones reales piden confirmación."
+}

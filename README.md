@@ -111,7 +111,31 @@
 
 ### Activación
 
-Los agentes se detectan automáticamente al abrir este workspace en Kiro. Selecciónalos desde el chat.
+Cada agente tiene dos archivos en `.kiro/agents/`:
+
+- **`<agente>.json`**: configuración de Kiro (esquema v3): nombre, descripción, herramientas, recursos, permisos y mensaje de bienvenida.
+- **`<agente>/agent.md`**: el system prompt, referenciado desde el JSON con `"prompt": "file://./<agente>/agent.md"`.
+
+Kiro detecta los agentes del workspace al abrir este repositorio. Para tenerlos disponibles en cualquier proyecto, cópialos a la carpeta global conservando la estructura (el `prompt` es relativo al JSON):
+
+```bash
+mkdir -p ~/.kiro/agents && cp -r .kiro/agents/* ~/.kiro/agents/
+```
+
+### Permisos (modo seguro)
+
+Cada agente solo tiene las herramientas y permisos que su función necesita:
+
+| Regla | Comportamiento |
+|-------|----------------|
+| `fs_write` → `allow` | Escritura libre solo en las carpetas de su área (por ejemplo, `infra/**` para IaC, `tests/**` para QA, `reports/**` para auditorías) |
+| `fs_read` → `deny` | Ningún agente lee secretos: `.env`, `~/.aws`, `~/.ssh`, llaves (`*.pem`, `*.key`), `*.tfstate` — salvo `.env.example` |
+| `shell` → `allow` | Comandos de solo lectura y análisis de su dominio (`git diff`, `terraform plan`, `kubectl get`, linters, tests, escáneres) |
+| `shell` → `ask` | Lo que cambia algo pide confirmación: commits, push, instalar dependencias, `kubectl apply`, pruebas de carga, escaneos activos |
+| `shell` → `deny` | Bloqueado siempre: `terraform apply/destroy`, `kubectl delete`, leer Secrets de K8s, `git push --force`, `git reset --hard`, `rm -rf`, `sudo`, borrar recursos de AWS, publicar imágenes o paquetes |
+| `subagent` → `allow` | Solo el **Agent Orchestrator**: puede invocar a los otros 37 agentes |
+
+En Kiro un `deny` siempre gana sobre un `allow`. Lo que no coincide con ninguna regla pide aprobación en tiempo de ejecución.
 
 ### Ejemplos por categoría
 
@@ -214,7 +238,7 @@ done
 ```
 .
 ├── .kiro/
-│   └── agents/                          # 38 agentes (Kiro IDE y system prompts para Claude)
+│   └── agents/                          # 38 agentes: <agente>.json (config Kiro) + <agente>/agent.md (prompt)
 │       ├── accessibility/agent.md
 │       ├── agent-orchestrator/agent.md
 │       ├── api-design/agent.md
