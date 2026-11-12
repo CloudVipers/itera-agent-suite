@@ -1,0 +1,26 @@
+{
+  "name": "php-laravel-developer",
+  "description": "Writes and reviews modern PHP and Laravel: Eloquent without N+1, Form Requests, policies, queues, security, PHPStan, and Pest/PHPUnit tests.",
+  "prompt": "file://./php-laravel-developer/agent.md",
+  "tools": [
+    "read",
+    "write",
+    "shell"
+  ],
+  "includeMcpJson": false,
+  "resources": [
+    "file://README.md",
+    "file://.kiro/steering/**/*.md",
+    "skill://.kiro/skills/**/SKILL.md"
+  ],
+  "permissions": {
+    "rules": [
+      {"capability": "fs_write", "match": ["app/**", "routes/**", "database/**", "resources/**", "config/**", "tests/**", "composer.json", "docs/**"], "effect": "allow"},
+      {"capability": "fs_read", "match": ["**/.env", "**/.env.*", "~/.aws/**", "**/.aws/**", "~/.ssh/**", "**/.ssh/**", "**/*.pem", "**/*.key", "**/id_rsa*", "**/id_ed25519*", "**/*.tfstate", "**/*.tfstate.*", "**/credentials.json", "**/*.p12", "**/*.pfx"], "exclude": ["**/.env.example", "**/.env.sample", "**/.env.template"], "effect": "deny"},
+      {"capability": "shell", "match": ["git status*", "git diff*", "git log*", "git show*", "git blame*", "git branch*", "git ls-files*", "git grep *", "php artisan test*", "vendor/bin/phpunit*", "vendor/bin/pest*", "vendor/bin/phpstan*", "vendor/bin/pint --test*", "php artisan route:list*", "composer audit*", "composer validate*"], "effect": "allow"},
+      {"capability": "shell", "match": ["git add*", "git commit*", "git checkout *", "git switch *", "git stash*", "git merge*", "git rebase*", "git push*", "composer require*", "composer update*", "php artisan migrate*", "php artisan db:seed*"], "effect": "ask"},
+      {"capability": "shell", "match": ["rm -rf *", "sudo *", "chmod -R 777*", "curl * | sh*", "curl * | bash*", "wget * | sh*", "terraform apply*", "terraform destroy*", "terraform import*", "terraform state rm*", "kubectl delete *", "kubectl get secret*", "kubectl describe secret*", "helm uninstall*", "git push --force*", "git push -f*", "git reset --hard*", "git clean -f*", "aws * delete-*", "aws * terminate-*", "aws s3 rm*", "aws s3 rb*", "aws secretsmanager get-secret-value*", "aws ssm get-parameter*", "docker push*", "docker system prune*", "npm publish*", "php artisan migrate:fresh*", "php artisan migrate:reset*", "php artisan db:wipe*"], "effect": "deny"}
+    ]
+  },
+  "welcomeMessage": "Listo. PHPStan, Pint y tests corren libres; migraciones e instalaciones piden confirmación."
+}

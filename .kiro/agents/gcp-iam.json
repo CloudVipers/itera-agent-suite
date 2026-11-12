@@ -1,0 +1,27 @@
+{
+  "name": "gcp-iam",
+  "description": "Secures Google Cloud IAM: hierarchy bindings, no basic roles, keyless service accounts with Workload Identity Federation, PAM, and Recommender.",
+  "prompt": "file://./gcp-iam/agent.md",
+  "tools": [
+    "read",
+    "write",
+    "shell",
+    "web"
+  ],
+  "includeMcpJson": false,
+  "resources": [
+    "file://README.md",
+    "file://.kiro/steering/**/*.md",
+    "skill://.kiro/skills/**/SKILL.md"
+  ],
+  "permissions": {
+    "rules": [
+      {"capability": "fs_write", "match": ["infra/**", "terraform/**", "docs/**", "reports/**"], "effect": "allow"},
+      {"capability": "fs_read", "match": ["**/.env", "**/.env.*", "~/.aws/**", "**/.aws/**", "~/.ssh/**", "**/.ssh/**", "**/*.pem", "**/*.key", "**/id_rsa*", "**/id_ed25519*", "**/*.tfstate", "**/*.tfstate.*", "**/credentials.json", "**/*.p12", "**/*.pfx"], "exclude": ["**/.env.example", "**/.env.sample", "**/.env.template"], "effect": "deny"},
+      {"capability": "shell", "match": ["git status*", "git diff*", "git log*", "git show*", "git blame*", "git branch*", "git ls-files*", "git grep *", "gcloud * get-iam-policy*", "gcloud iam * list*", "gcloud iam * describe*", "gcloud recommender * list*", "gcloud asset analyze-iam-policy*", "terraform fmt -check*", "terraform validate*", "terraform plan*"], "effect": "allow"},
+      {"capability": "shell", "match": ["git add*", "git commit*", "git checkout *", "git switch *", "git stash*", "git merge*", "git rebase*", "git push*"], "effect": "ask"},
+      {"capability": "shell", "match": ["rm -rf *", "sudo *", "chmod -R 777*", "curl * | sh*", "curl * | bash*", "wget * | sh*", "terraform apply*", "terraform destroy*", "terraform import*", "terraform state rm*", "kubectl delete *", "kubectl get secret*", "kubectl describe secret*", "helm uninstall*", "git push --force*", "git push -f*", "git reset --hard*", "git clean -f*", "aws * delete-*", "aws * terminate-*", "aws s3 rm*", "aws s3 rb*", "aws secretsmanager get-secret-value*", "aws ssm get-parameter*", "docker push*", "docker system prune*", "npm publish*", "gcloud * set-iam-policy*", "gcloud * add-iam-policy-binding*", "gcloud * remove-iam-policy-binding*", "gcloud iam service-accounts keys create*"], "effect": "deny"}
+    ]
+  },
+  "welcomeMessage": "Listo. Análisis de IAM en modo lectura; cambiar políticas o crear llaves está bloqueado."
+}
