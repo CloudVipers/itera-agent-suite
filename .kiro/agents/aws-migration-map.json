@@ -1,0 +1,27 @@
+{
+  "name": "aws-migration-map",
+  "description": "Leads migrations to AWS with the MAP methodology: discovery, business case, 7 Rs per workload, wave planning, MGN/DMS tooling, and cutover runbooks.",
+  "prompt": "file://./aws-migration-map/agent.md",
+  "tools": [
+    "read",
+    "write",
+    "shell",
+    "web"
+  ],
+  "includeMcpJson": false,
+  "resources": [
+    "file://README.md",
+    "file://.kiro/steering/**/*.md",
+    "skill://.kiro/skills/**/SKILL.md"
+  ],
+  "permissions": {
+    "rules": [
+      {"capability": "fs_write", "match": ["docs/**", "reports/**", "migration/**", "infra/**"], "effect": "allow"},
+      {"capability": "fs_read", "match": ["**/.env", "**/.env.*", "~/.aws/**", "**/.aws/**", "~/.ssh/**", "**/.ssh/**", "**/*.pem", "**/*.key", "**/id_rsa*", "**/id_ed25519*", "**/*.tfstate", "**/*.tfstate.*", "**/credentials.json", "**/*.p12", "**/*.pfx"], "exclude": ["**/.env.example", "**/.env.sample", "**/.env.template"], "effect": "deny"},
+      {"capability": "shell", "match": ["git status*", "git diff*", "git log*", "git show*", "git blame*", "git branch*", "git ls-files*", "git grep *", "aws mgn describe-*", "aws dms describe-*", "aws discovery describe-*", "aws discovery list-*", "aws migrationhub-strategy get-*", "aws migrationhub-strategy list-*", "terraform fmt -check*", "terraform validate*", "terraform plan*"], "effect": "allow"},
+      {"capability": "shell", "match": ["git add*", "git commit*", "git checkout *", "git switch *", "git stash*", "git merge*", "git rebase*", "git push*", "aws mgn start-*", "aws mgn launch-*", "aws dms start-*", "aws mgn finalize-cutover*"], "effect": "ask"},
+      {"capability": "shell", "match": ["rm -rf *", "sudo *", "chmod -R 777*", "curl * | sh*", "curl * | bash*", "wget * | sh*", "terraform apply*", "terraform destroy*", "terraform import*", "terraform state rm*", "kubectl delete *", "kubectl get secret*", "kubectl describe secret*", "helm uninstall*", "git push --force*", "git push -f*", "git reset --hard*", "git clean -f*", "aws * delete-*", "aws * terminate-*", "aws s3 rm*", "aws s3 rb*", "aws secretsmanager get-secret-value*", "aws ssm get-parameter*", "docker push*", "docker system prune*", "npm publish*", "aws mgn delete-*", "aws dms delete-*"], "effect": "deny"}
+    ]
+  },
+  "welcomeMessage": "Listo. Planeamos la migración por olas con rollback probado; las acciones sobre la replicación piden confirmación."
+}

@@ -1,0 +1,27 @@
+{
+  "name": "azure-architect",
+  "description": "Designs and reviews Microsoft Azure workloads and landing zones with the Azure Well-Architected Framework, Azure Policy, Entra ID, and Bicep/Terraform.",
+  "prompt": "file://./azure-architect/agent.md",
+  "tools": [
+    "read",
+    "write",
+    "shell",
+    "web"
+  ],
+  "includeMcpJson": false,
+  "resources": [
+    "file://README.md",
+    "file://.kiro/steering/**/*.md",
+    "skill://.kiro/skills/**/SKILL.md"
+  ],
+  "permissions": {
+    "rules": [
+      {"capability": "fs_write", "match": ["infra/**", "bicep/**", "terraform/**", "docs/**", "reports/**"], "effect": "allow"},
+      {"capability": "fs_read", "match": ["**/.env", "**/.env.*", "~/.aws/**", "**/.aws/**", "~/.ssh/**", "**/.ssh/**", "**/*.pem", "**/*.key", "**/id_rsa*", "**/id_ed25519*", "**/*.tfstate", "**/*.tfstate.*", "**/credentials.json", "**/*.p12", "**/*.pfx"], "exclude": ["**/.env.example", "**/.env.sample", "**/.env.template"], "effect": "deny"},
+      {"capability": "shell", "match": ["git status*", "git diff*", "git log*", "git show*", "git blame*", "git branch*", "git ls-files*", "git grep *", "az account show*", "az account list*", "az group list*", "az resource list*", "az * show*", "az * list*", "az policy * list*", "az bicep build*", "az deployment * what-if*", "terraform fmt -check*", "terraform validate*", "terraform plan*", "bicep build*", "bicep lint*"], "effect": "allow"},
+      {"capability": "shell", "match": ["git add*", "git commit*", "git checkout *", "git switch *", "git stash*", "git merge*", "git rebase*", "git push*", "az deployment * create*", "az group create*"], "effect": "ask"},
+      {"capability": "shell", "match": ["rm -rf *", "sudo *", "chmod -R 777*", "curl * | sh*", "curl * | bash*", "wget * | sh*", "terraform apply*", "terraform destroy*", "terraform import*", "terraform state rm*", "kubectl delete *", "kubectl get secret*", "kubectl describe secret*", "helm uninstall*", "git push --force*", "git push -f*", "git reset --hard*", "git clean -f*", "aws * delete-*", "aws * terminate-*", "aws s3 rm*", "aws s3 rb*", "aws secretsmanager get-secret-value*", "aws ssm get-parameter*", "docker push*", "docker system prune*", "npm publish*", "az * delete*", "az group delete*", "az keyvault secret show*"], "effect": "deny"}
+    ]
+  },
+  "welcomeMessage": "Listo. Lectura y what-if de Azure libres; desplegar o borrar recursos está bloqueado o pide confirmación."
+}
