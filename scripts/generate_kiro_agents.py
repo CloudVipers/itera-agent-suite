@@ -723,6 +723,533 @@ agent("blockchain-architecture",
       allow=["forge build*", "forge test*", "npx hardhat compile*"],
       deny=["cast send*", "forge script * --broadcast*", "cast wallet *"])
 
+
+# ═══ Lote 3 (78 agentes) ═══════════════════════════════════════════════════════
+DOCS_ONLY = dict(tools=(R, W, WEB), write=["docs/**", "reports/**"])
+DB_DENY = ["DROP DATABASE*", "dropdb *", "* DROP DATABASE*", "* drop database*", "* TRUNCATE *", "* truncate *"]
+
+# ─── Contenedores ──────────────────────────────────────────────────────────────
+agent("docker-engineering",
+      "Writes and reviews Dockerfiles, Compose files, and image builds: multi-stage, BuildKit caching and secrets, multi-arch with buildx, and runtime hardening.",
+      "Listo. Lint y análisis de imágenes libres; construir pide confirmación y publicar imágenes está bloqueado.",
+      write=["**/Dockerfile*", "**/.dockerignore", "**/docker-compose*.yml", "**/compose*.yaml", "docs/**"],
+      allow=["hadolint*", "docker images*", "docker inspect *", "docker history *", "dive *", "trivy image*", "trivy fs*",
+             "docker buildx ls*", "docker compose config*"],
+      ask=["docker build*", "docker buildx build*", "docker compose up*", "docker compose down*", "docker run*"],
+      deny=["docker rm -f*", "docker volume rm*", "docker compose down -v*"])
+agent("aws-ecs-fargate",
+      "Designs and reviews Amazon ECS on Fargate/EC2: task definitions, roles, secrets, networking, deployments with circuit breaker, autoscaling, and cost.",
+      "Listo. Lectura de ECS libre; desplegar o escalar servicios pide confirmación.",
+      tools=(R, W, S, WEB), write=["infra/**", "lib/**", "terraform/**", "task-definitions/**", "docs/**"],
+      allow=["aws ecs describe-*", "aws ecs list-*", "aws ecr describe-*", "aws elbv2 describe-*", "cdk synth*", "cdk diff*"] + TF_READ,
+      ask=["aws ecs update-service*", "aws ecs register-task-definition*", "aws ecs run-task*", "cdk deploy*"],
+      deny=["aws ecs delete-*", "aws ecs deregister-*", "aws ecs execute-command*", "cdk destroy*"])
+
+# ─── Programación ──────────────────────────────────────────────────────────────
+agent("rust-developer",
+      "Writes and reviews safe, idiomatic Rust: ownership, error handling, async with Tokio, unsafe justification, Clippy, and testing.",
+      "Listo. cargo check, clippy y test corren libres; publicar crates está bloqueado.",
+      write=["src/**", "tests/**", "benches/**", "examples/**", "Cargo.toml", "docs/**"],
+      allow=["cargo check*", "cargo clippy*", "cargo test*", "cargo fmt --check*", "cargo build*", "cargo audit*", "cargo deny*"],
+      ask=["cargo add*", "cargo update*", "cargo run*"], deny=["cargo publish*"])
+agent("php-laravel-developer",
+      "Writes and reviews modern PHP and Laravel: Eloquent without N+1, Form Requests, policies, queues, security, PHPStan, and Pest/PHPUnit tests.",
+      "Listo. PHPStan, Pint y tests corren libres; migraciones e instalaciones piden confirmación.",
+      write=["app/**", "routes/**", "database/**", "resources/**", "config/**", "tests/**", "composer.json", "docs/**"],
+      allow=["php artisan test*", "vendor/bin/phpunit*", "vendor/bin/pest*", "vendor/bin/phpstan*", "vendor/bin/pint --test*",
+             "php artisan route:list*", "composer audit*", "composer validate*"],
+      ask=["composer require*", "composer update*", "php artisan migrate*", "php artisan db:seed*"],
+      deny=["php artisan migrate:fresh*", "php artisan migrate:reset*", "php artisan db:wipe*"])
+agent("ruby-rails-developer",
+      "Writes and reviews Ruby on Rails applications: Active Record without N+1, safe migrations, jobs, Brakeman-clean security, and RSpec tests.",
+      "Listo. RSpec, RuboCop y Brakeman corren libres; migraciones piden confirmación.",
+      write=["app/**", "config/**", "db/migrate/**", "lib/**", "spec/**", "test/**", "Gemfile", "docs/**"],
+      allow=["bundle exec rspec*", "bin/rails test*", "bundle exec rubocop*", "bundle exec brakeman*", "bundle audit*",
+             "bin/rails routes*"],
+      ask=["bundle add*", "bundle install*", "bundle update*", "bin/rails db:migrate*", "bin/rails db:rollback*"],
+      deny=["bin/rails db:drop*", "bin/rails db:reset*", "bin/rails db:schema:load*"])
+agent("cpp-developer",
+      "Writes and reviews modern C++ (17/20/23): RAII, ownership, undefined behavior, sanitizers, concurrency, CMake, and performance.",
+      "Listo. Compilar, probar y analizar con sanitizers es libre.",
+      write=["src/**", "include/**", "tests/**", "CMakeLists.txt", "**/CMakeLists.txt", "cmake/**", "docs/**"],
+      allow=["cmake *", "ctest*", "make *", "ninja*", "clang-tidy*", "clang-format --dry-run*", "cppcheck*"],
+      ask=["conan install*", "vcpkg install*"])
+
+# ─── Requerimientos ────────────────────────────────────────────────────────────
+agent("business-process-analyst",
+      "Maps and improves business processes with BPMN and DMN: as-is analysis, waste and bottlenecks, to-be design, controls, and KPIs.",
+      "Listo. Mapeamos el proceso real, encontramos el desperdicio y lo traducimos a requerimientos.",
+      **dict(DOCS_ONLY, write=["docs/**", "processes/**", "reports/**"]))
+agent("technical-specification-writer",
+      "Writes precise, testable, traceable specifications: functional specs, SRS, interface and data specifications, and acceptance test specs.",
+      "Listo. Convertimos requerimientos acordados en especificaciones sin ambigüedad.",
+      **dict(DOCS_ONLY, write=["docs/**", "specs/**"]))
+
+# ─── Regulación y derecho ──────────────────────────────────────────────────────
+agent("pci-dss-compliance",
+      "Guides PCI DSS v4.0.1 compliance: CDE scoping and scope reduction, requirement-by-requirement gap analysis, controls, and evidence.",
+      "Listo. Guía de cumplimiento PCI DSS; no reemplaza la evaluación de un QSA.",
+      **dict(DOCS_ONLY, write=["docs/compliance/**", "docs/**", "reports/**"]))
+agent("iso27001-isms",
+      "Designs and implements ISO/IEC 27001:2022 ISMS: scope, risk assessment, Statement of Applicability with Annex A, audits, and certification.",
+      "Listo. Un SGSI proporcional y útil, no una carpeta de documentos.",
+      **dict(DOCS_ONLY, write=["docs/compliance/**", "docs/isms/**", "docs/**", "reports/**"]))
+agent("colombia-financial-regulation",
+      "Maps Colombian financial sector technology obligations (SFC: cybersecurity, cloud, outsourcing, incidents; Law 1581; SARLAFT) to controls and evidence.",
+      "Listo. Mapeo regulatorio de la SFC a controles técnicos; verifica siempre la norma vigente con tu área legal.",
+      **dict(DOCS_ONLY, write=["docs/compliance/**", "docs/**", "reports/**"]))
+agent("ai-governance",
+      "Builds AI governance aligned with the EU AI Act, ISO/IEC 42001, and NIST AI RMF: inventories, risk classification, impact assessments, oversight.",
+      "Listo. Gobierno de IA por caso de uso y riesgo; las decisiones legales requieren revisión jurídica.",
+      **dict(DOCS_ONLY, write=["docs/ai-governance/**", "docs/**", "reports/**"]))
+agent("tech-contracts-legal",
+      "Reviews technology contracts (MSA, SOW, SaaS, SLA, DPA, NDA): plain-language summaries, risks, missing protections, and alternative wording.",
+      "Listo. Revisión de contratos en lenguaje claro; no es asesoría legal, valida siempre con un abogado.",
+      **dict(DOCS_ONLY, write=["docs/legal/**", "docs/**"]))
+agent("open-source-licensing",
+      "Manages open source license compliance: license identification, obligations by distribution model, compatibility, notices, and license choice.",
+      "Listo. Analizo licencias de dependencias; los casos dudosos van a revisión legal.",
+      tools=(R, W, S, WEB), write=["docs/**", "reports/**", "THIRD_PARTY_NOTICES*", "NOTICE*", "LICENSE*"],
+      allow=["scancode *", "license-checker*", "npx license-checker*", "pip-licenses*", "go-licenses *", "syft *"])
+agent("colombian-labor-law",
+      "Explains Colombian labor obligations (contracts, hours, surcharges, benefits, social security, payroll, termination) and turns them into HR software rules.",
+      "Listo. Normativa laboral colombiana aplicada; confirma los valores del año vigente y consulta a un abogado laboral en casos sensibles.",
+      **dict(DOCS_ONLY, write=["docs/**", "docs/hr/**", "reports/**"]))
+
+# ─── RRHH ──────────────────────────────────────────────────────────────────────
+agent("technical-recruiter",
+      "Designs fair, structured technical hiring: role intake, inclusive job descriptions, sourcing, interview plans, scorecards, and offers.",
+      "Listo. Contratación estructurada, justa y rápida para roles técnicos.",
+      **dict(DOCS_ONLY, write=["docs/**", "hiring/**"]))
+agent("people-operations",
+      "Designs people processes for tech companies: onboarding/offboarding, performance cycles, compensation frameworks, policies, and engagement.",
+      "Listo. Procesos de personas claros y justos; lo sensible legalmente va a revisión jurídica.",
+      **dict(DOCS_ONLY, write=["docs/**", "docs/hr/**"]))
+agent("learning-development",
+      "Designs learning paths, onboarding curricula, certification plans, and workshops for tech teams, measured by job outcomes.",
+      "Listo. Rutas de aprendizaje prácticas, medidas por resultados en el trabajo.",
+      **dict(DOCS_ONLY, write=["docs/**", "learning/**", "training/**"]))
+
+# ─── DevOps / DevSecOps ────────────────────────────────────────────────────────
+agent("github-actions-cicd",
+      "Designs and secures GitHub Actions workflows: reusable workflows, caching, least-privilege permissions, SHA pinning, OIDC, and protected environments.",
+      "Listo. Revisión de workflows libre; ejecutar workflows pide confirmación.",
+      write=[".github/**", "docs/**"],
+      allow=["actionlint*", "zizmor *", "yamllint*", "gh run list*", "gh run view*", "gh workflow list*", "gh workflow view*"],
+      ask=["gh workflow run*", "gh run rerun*", "gh run cancel*"],
+      deny=["gh secret *", "gh variable delete*"])
+agent("gitlab-cicd",
+      "Designs and secures GitLab CI/CD: rules and DAG pipelines, components, caching, protected variables, ID tokens, scanners, and environments.",
+      "Listo. Revisión de pipelines libre; disparar pipelines pide confirmación.",
+      tools=(R, W, S, WEB), write=[".gitlab-ci.yml", ".gitlab/**", "ci/**", "templates/**", "docs/**"],
+      allow=["yamllint*", "glab ci lint*", "glab ci list*", "glab ci view*"],
+      ask=["glab ci run*", "glab ci retry*"],
+      deny=["glab variable delete*"])
+agent("gitops-argocd",
+      "Runs GitOps with Argo CD and Flux: repository structure, ApplicationSets, sync policies, secrets, environment promotion, and Argo Rollouts.",
+      "Listo. Git es la fuente de verdad: lectura del clúster libre, sincronizar pide confirmación.",
+      write=["apps/**", "clusters/**", "k8s/**", "manifests/**", "helm/**", "charts/**", "docs/**"],
+      allow=K8S_READ + ["argocd app list*", "argocd app get*", "argocd app diff*", "kustomize build*", "helm template*",
+                        "helm lint*", "kubeconform*"],
+      ask=["argocd app sync*", "argocd app rollback*", "kubectl argo rollouts promote*"],
+      deny=["argocd app delete*", "argocd cluster rm*"])
+agent("policy-as-code",
+      "Turns standards into tested, automated policies with OPA/Rego, Conftest, Kyverno, Gatekeeper, Checkov, and Sentinel, rolled out audit-first.",
+      "Listo. Políticas con pruebas y mensajes claros; primero en modo auditoría, después enforce.",
+      write=["policies/**", "policy/**", "rego/**", "kyverno/**", "docs/**"],
+      allow=["opa test*", "opa eval*", "opa fmt*", "conftest *", "kyverno test*", "kyverno apply*", "checkov *"] + TF_READ,
+      ask=["kubectl apply*"])
+agent("sca-security",
+      "Software composition analysis: finds and prioritizes vulnerable, malicious, and outdated dependencies with reachability, EPSS, and KEV; automates updates.",
+      "Listo. Escaneo de dependencias libre; actualizar dependencias pide confirmación.",
+      tools=(R, W, S, WEB), write=["reports/**", "docs/**", "renovate.json", ".github/dependabot.yml"],
+      allow=["osv-scanner*", "npm audit*", "pip-audit*", "govulncheck*", "cargo audit*", "grype *", "trivy fs*", "syft *",
+             "snyk test*", "dependency-check*"],
+      ask=["npm audit fix*", "npm update*", "pip install*"],
+      deny=["npm audit fix --force*"])
+agent("api-security-testing",
+      "Dynamically tests REST, GraphQL, and gRPC APIs against the OWASP API Security Top 10, with multi-user authorization testing, on authorized targets only.",
+      "Listo. Solo contra APIs autorizadas por escrito: cada petición o escaneo pide confirmación.",
+      tools=(R, W, S, WEB), write=["reports/**", "docs/security/**"],
+      ask=["curl *", "http *", "zap*", "nuclei*", "schemathesis run*", "ffuf*", "restler*"])
+
+# ─── Migración, ML y datos ─────────────────────────────────────────────────────
+agent("database-migration",
+      "Migrates databases across engines and platforms with schema conversion, CDC replication (AWS DMS, native), validation, cutover, and rollback.",
+      "Listo. Lectura de DMS libre; iniciar replicación o cutover pide confirmación y borrar está bloqueado.",
+      tools=(R, W, S, WEB), write=["migration/**", "sql/**", "docs/**", "reports/**"],
+      allow=["aws dms describe-*", "aws dms test-connection*", "aws rds describe-*", "pgloader --dry-run*"],
+      ask=["aws dms start-replication-task*", "aws dms stop-replication-task*", "aws dms modify-*", "pgloader *", "psql *"],
+      deny=["aws dms delete-*", "aws rds delete-*"] + DB_DENY)
+agent("mainframe-modernization",
+      "Modernizes COBOL/PL/I, CICS, IMS, and Db2 workloads incrementally: discovery, strategy per domain, data conversion, and parallel-run validation.",
+      "Listo. Modernización incremental, con reglas de negocio protegidas y corridas en paralelo.",
+      tools=(R, W, S, WEB), write=["docs/**", "reports/**", "migration/**"],
+      allow=["aws m2 list-*", "aws m2 get-*"])
+agent("machine-learning-engineer",
+      "Builds production ML models: problem framing, leakage-free data prep, baselines, training and tuning, evaluation, and reproducible packaging.",
+      "Listo. Siempre contra un baseline y sin fugas de datos; los entrenamientos en la nube piden confirmación.",
+      tools=(R, W, S, WEB), write=["src/**", "notebooks/**", "models/**", "training/**", "tests/**", "docs/**"],
+      allow=PY_CHECKS + ["jupyter nbconvert --to script*"],
+      ask=["python train*", "python -m train*", "aws sagemaker create-training-job*"] + INSTALL_ASK)
+agent("data-scientist",
+      "Turns data into decisions: EDA, statistics, A/B test design and analysis, causal inference, forecasting, and clear communication of uncertainty.",
+      "Listo. Respuesta primero, con tamaño del efecto e incertidumbre; nada de causalidad sin diseño que la respalde.",
+      tools=(R, W, S, WEB), write=["notebooks/**", "analysis/**", "reports/**", "docs/**"],
+      allow=PY_CHECKS + ["jupyter nbconvert --to script*"],
+      ask=["aws athena start-query-execution*", "bq query*"] + INSTALL_ASK)
+agent("data-governance",
+      "Makes data trustworthy and compliant: ownership, catalogs and glossaries, quality rules, classification, access policies, lineage, and MDM.",
+      "Listo. Gobierno de datos automatizado: dueños, calidad, clasificación y acceso.",
+      tools=(R, W, S, WEB), write=["docs/**", "governance/**", "reports/**", "models/**"],
+      allow=["aws lakeformation list-*", "aws lakeformation get-*", "aws glue get-*", "aws datazone list-*",
+             "dbt test*", "dbt ls*"],
+      deny=["aws lakeformation grant-permissions*", "aws lakeformation revoke-permissions*"])
+agent("data-warehouse",
+      "Designs analytical warehouses on Redshift, Snowflake, BigQuery, Synapse/Fabric: dimensional modeling, dbt layers, performance, cost, and security.",
+      "Listo. Modelos con grano explícito y pruebas; las consultas pesadas o cargas completas piden confirmación.",
+      tools=(R, W, S, WEB), write=["models/**", "macros/**", "sql/**", "tests/**", "docs/**"],
+      allow=["dbt compile*", "dbt parse*", "dbt ls*", "dbt test*", "sqlfluff lint*"],
+      ask=["dbt run*", "dbt build*", "bq query*", "aws redshift-data execute-statement*", "snowsql *"],
+      deny=["dbt run --full-refresh*"] + DB_DENY)
+agent("kafka-streaming",
+      "Designs and operates Apache Kafka (MSK, Confluent, Redpanda): topics and partitions, durable producers, idempotent consumers, schemas, and stream processing.",
+      "Listo. Lectura del clúster libre; crear o modificar topics pide confirmación y borrar está bloqueado.",
+      tools=(R, W, S, WEB), write=["schemas/**", "src/**", "infra/**", "docs/**"],
+      allow=["aws kafka describe-*", "aws kafka list-*", "kafka-topics.sh --describe*", "kafka-topics.sh --list*",
+             "kafka-consumer-groups.sh --describe*", "kcat -L*"] + TF_READ,
+      ask=["kafka-topics.sh --create*", "kafka-topics.sh --alter*", "kafka-configs.sh --alter*",
+           "kafka-consumer-groups.sh --reset-offsets*"],
+      deny=["kafka-topics.sh --delete*", "aws kafka delete-*"])
+
+# ─── Bases de datos ────────────────────────────────────────────────────────────
+def db_agent(slug, description, welcome, read_cmds, ask_cmds, extra_deny=()):
+    agent(slug, description, welcome, tools=(R, W, S, WEB),
+          write=["migrations/**", "**/migrations/**", "db/**", "sql/**", "schema/**", "docs/**", "reports/**"],
+          allow=read_cmds, ask=ask_cmds, deny=DB_DENY + list(extra_deny))
+
+db_agent("postgresql-specialist",
+         "PostgreSQL DBA and performance specialist: schema design, EXPLAIN ANALYZE, indexes, autovacuum, lock-safe migrations, replication, and PITR.",
+         "Listo. Diagnóstico con planes y estadísticas; conectarse a la base pide confirmación.",
+         ["aws rds describe-*", "pg_dump --schema-only*", "sqlfluff lint*"], ["psql *", "pg_restore *"],
+         ["aws rds delete-*"])
+db_agent("mongodb-specialist",
+         "MongoDB specialist: access-pattern document modeling, ESR indexes, aggregation tuning, shard keys, write concerns, and secure operations.",
+         "Listo. Modelado y rendimiento de MongoDB; conectarse al clúster pide confirmación.",
+         ["atlas clusters list*", "atlas clusters describe*"], ["mongosh *", "mongodump *", "mongorestore *"],
+         ["* dropDatabase*", "* .drop()*", "atlas clusters delete*"])
+db_agent("dynamodb-specialist",
+         "Amazon DynamoDB specialist: access-pattern-first key design, single-table design, GSIs, conditional writes, capacity modes, and hot partitions.",
+         "Listo. Diseño de llaves desde los patrones de acceso; escribir datos pide confirmación.",
+         ["aws dynamodb describe-*", "aws dynamodb list-*", "aws cloudwatch get-metric-data*"],
+         ["aws dynamodb query*", "aws dynamodb get-item*", "aws dynamodb put-item*", "aws dynamodb update-*",
+          "aws dynamodb create-table*"],
+         ["aws dynamodb delete-*", "aws dynamodb scan*"])
+db_agent("redis-specialist",
+         "Redis/Valkey specialist (ElastiCache, MemoryDB): data structures, caching with stampede protection, eviction, persistence, and cluster operations.",
+         "Listo. Diseño y diagnóstico de Redis; comandos destructivos como FLUSHALL o KEYS están bloqueados.",
+         ["aws elasticache describe-*", "aws memorydb describe-*"],
+         ["redis-cli *", "valkey-cli *"],
+         ["* FLUSHALL*", "* FLUSHDB*", "* flushall*", "* flushdb*", "* KEYS *", "aws elasticache delete-*"])
+db_agent("sql-server-dba",
+         "SQL Server DBA: execution plans, Query Store, indexing, T-SQL quality, Always On, backups and restores, security, and licensing.",
+         "Listo. Diagnóstico con planes y Query Store; conectarse a la instancia pide confirmación.",
+         ["aws rds describe-*", "az sql * show*", "az sql * list*"], ["sqlcmd *", "Invoke-Sqlcmd*"],
+         ["aws rds delete-*", "az sql * delete*"])
+db_agent("oracle-database",
+         "Oracle Database specialist: AWR/ASH diagnostics, execution plans, partitioning, RAC and Data Guard, RMAN, security, and licensing.",
+         "Listo. Diagnóstico con AWR y planes reales; conectarse a la base pide confirmación.",
+         ["aws rds describe-*", "oci db * list*", "oci db * get*"], ["sqlplus *", "sql *", "rman *"],
+         ["aws rds delete-*", "oci db * delete*", "oci db * terminate*"])
+
+# ─── Frontend / Backend / Mobile ───────────────────────────────────────────────
+FRONT_WRITE = ["src/**", "app/**", "components/**", "pages/**", "public/**", "styles/**", "tests/**", "e2e/**", "docs/**"]
+agent("react-developer",
+      "Builds and reviews React 18/19 + TypeScript: hooks, state and server state, forms, performance profiling, accessibility, and Testing Library.",
+      "Listo. Lint, tipos y tests libres; instalar dependencias pide confirmación.",
+      write=FRONT_WRITE, allow=JS_CHECKS + ["npx playwright test*"], ask=INSTALL_ASK + ["npm run dev*"])
+agent("angular-developer",
+      "Builds and reviews modern Angular: standalone components, signals, control flow, OnPush, RxJS, typed forms, and testing.",
+      "Listo. ng lint/test/build libres; instalar dependencias pide confirmación.",
+      write=FRONT_WRITE + ["angular.json"], allow=JS_CHECKS + ["npx ng lint*", "npx ng test*", "npx ng build*", "ng lint*", "ng test*", "ng build*"],
+      ask=INSTALL_ASK + ["ng add*", "ng update*", "ng serve*"])
+agent("vue-developer",
+      "Builds and reviews Vue 3 and Nuxt: Composition API, reactivity pitfalls, Pinia, routing, SSR, security, and Vitest.",
+      "Listo. Lint, tipos y tests libres; instalar dependencias pide confirmación.",
+      write=FRONT_WRITE + ["nuxt.config.*", "composables/**", "stores/**"], allow=JS_CHECKS + ["npx vue-tsc*", "npx nuxi typecheck*"],
+      ask=INSTALL_ASK + ["npm run dev*"])
+agent("nextjs-developer",
+      "Builds and reviews Next.js App Router apps: Server/Client Components, Server Actions with validation and authorization, caching, and deployment.",
+      "Listo. Lint, build y tests libres; desplegar pide confirmación.",
+      write=FRONT_WRITE + ["next.config.*", "middleware.ts"], allow=JS_CHECKS + ["npx next lint*", "npx next build*"],
+      ask=INSTALL_ASK + ["npm run dev*", "vercel deploy*", "npx vercel*"])
+agent("backend-engineering",
+      "Designs and reviews server-side systems across languages: structure, transactions, async work, resilience, security, and observability.",
+      "Listo. Revisión de backend independiente del lenguaje; tests y lint corren libres.",
+      write=["src/**", "app/**", "internal/**", "tests/**", "docs/**"], allow=JS_CHECKS + PY_CHECKS + OTHER_TESTS)
+agent("graphql-api",
+      "Designs and reviews GraphQL schemas and resolvers: client-driven design, DataLoader, field-level authorization, limits, and federation checks.",
+      "Listo. Validación y chequeo de cambios de esquema libres.",
+      write=["schema/**", "**/*.graphql", "src/**", "docs/**"],
+      allow=JS_CHECKS + ["npx graphql-inspector*", "rover subgraph check*", "rover graph check*"],
+      ask=["rover subgraph publish*"])
+MOBILE_WRITE = ["ios/**", "android/**", "lib/**", "src/**", "app/**", "test/**", "tests/**", "docs/**"]
+agent("ios-developer",
+      "Builds and reviews iOS apps with Swift and SwiftUI: concurrency, data, networking, Keychain security, privacy, accessibility, and tests.",
+      "Listo. Compilar y probar es libre; publicar en App Store está bloqueado.",
+      write=MOBILE_WRITE + ["**/*.swift", "Package.swift"],
+      allow=["xcodebuild test*", "xcodebuild build*", "xcodebuild -list*", "swift build*", "swift test*", "swiftlint*", "xcrun simctl list*"],
+      ask=["pod install*", "swift package update*", "fastlane *"],
+      deny=["fastlane deliver*", "fastlane pilot upload*", "xcrun altool --upload*"])
+agent("android-developer",
+      "Builds and reviews Android apps with Kotlin and Jetpack Compose: architecture, coroutines/Flow, Room, WorkManager, security, and Play readiness.",
+      "Listo. Gradle lint y tests libres; publicar en Play Store está bloqueado.",
+      write=MOBILE_WRITE + ["**/*.kt", "**/build.gradle.kts", "gradle/**"],
+      allow=["./gradlew lint*", "./gradlew test*", "./gradlew assembleDebug*", "./gradlew detekt*", "./gradlew ktlintCheck*", "adb devices*"],
+      ask=["./gradlew connectedAndroidTest*", "./gradlew bundleRelease*", "fastlane *"],
+      deny=["fastlane supply*", "./gradlew publish*"])
+agent("react-native-developer",
+      "Builds and reviews React Native and Expo apps: New Architecture, navigation, list performance, secure storage, EAS builds, and OTA updates.",
+      "Listo. Lint y tests libres; builds y OTA updates piden confirmación.",
+      write=MOBILE_WRITE + ["app.json", "app.config.*", "eas.json"], allow=JS_CHECKS + ["npx expo-doctor*"],
+      ask=INSTALL_ASK + ["npx expo install*", "eas build*", "eas update*", "npx expo prebuild*"],
+      deny=["eas submit*"])
+agent("flutter-developer",
+      "Builds and reviews Flutter apps: widget composition, Riverpod/Bloc, go_router, performance, platform channels, secure storage, and tests.",
+      "Listo. flutter analyze y test libres; publicar en tiendas está bloqueado.",
+      write=MOBILE_WRITE + ["pubspec.yaml", "integration_test/**"],
+      allow=["flutter analyze*", "flutter test*", "dart format --set-exit-if-changed*", "dart analyze*", "flutter doctor*"],
+      ask=["flutter pub get*", "flutter pub add*", "flutter build*", "flutter run*"],
+      deny=["fastlane deliver*", "fastlane supply*"])
+
+# ─── Observabilidad / SRE ──────────────────────────────────────────────────────
+agent("opentelemetry",
+      "Instruments applications with OpenTelemetry: auto and manual tracing, metrics, log correlation, context propagation, Collector pipelines, and sampling.",
+      "Listo. Instrumentación neutral al proveedor; sin secretos ni PII en la telemetría.",
+      write=["src/**", "otel/**", "collector/**", "k8s/**", "infra/**", "docs/**"],
+      allow=["otelcol validate*", "otelcol-contrib validate*"] + JS_CHECKS + PY_CHECKS)
+agent("prometheus-grafana",
+      "Builds monitoring with Prometheus, Alertmanager, Grafana, Loki, and Tempo: PromQL, recording and alerting rules, dashboards as code, cardinality control.",
+      "Listo. Validación de reglas y consultas libre; recargar configuración pide confirmación.",
+      write=["monitoring/**", "dashboards/**", "alerts/**", "rules/**", "k8s/**", "docs/**"],
+      allow=["promtool check*", "promtool test*", "amtool check-config*", "jsonnet *"] + K8S_READ,
+      ask=["kubectl apply*", "curl -X POST *"])
+agent("aws-cloudwatch",
+      "Designs AWS observability with CloudWatch: metrics and percentile alarms, Logs Insights, retention, X-Ray/Application Signals, canaries, and cost.",
+      "Listo. Consultas de métricas y logs libres; crear o borrar alarmas pide confirmación o está bloqueado.",
+      tools=(R, W, S, WEB), write=["infra/**", "monitoring/**", "dashboards/**", "docs/**"],
+      allow=["aws cloudwatch describe-*", "aws cloudwatch get-*", "aws cloudwatch list-*", "aws logs describe-*",
+             "aws logs start-query*", "aws logs get-query-results*", "aws xray get-*", "aws synthetics describe-*"] + TF_READ,
+      ask=["aws cloudwatch put-metric-alarm*", "aws logs put-retention-policy*", "aws cloudwatch put-dashboard*"],
+      deny=["aws cloudwatch delete-*", "aws logs delete-*"])
+agent("chaos-engineering",
+      "Designs hypothesis-driven chaos experiments with AWS FIS, Chaos Mesh, LitmusChaos, and Toxiproxy, with limited blast radius and stop conditions.",
+      "Listo. Diseño experimentos con condiciones de parada; ejecutarlos pide confirmación y en producción requiere tu autorización.",
+      tools=(R, W, S, WEB), write=["chaos/**", "experiments/**", "docs/**", "reports/**"],
+      allow=["aws fis list-*", "aws fis get-*"] + K8S_READ,
+      ask=["aws fis start-experiment*", "aws fis create-experiment-template*", "kubectl apply*"],
+      deny=["aws fis delete-*"])
+agent("incident-management-oncall",
+      "Designs incident management and on-call: severity levels, roles, communications, rotations, alert quality, and blameless postmortems.",
+      "Listo. Mitigar primero, investigar después; postmortems sin culpables.",
+      **dict(DOCS_ONLY, write=["docs/**", "runbooks/**", "postmortems/**", "incidents/**"]))
+agent("capacity-planning",
+      "Plans capacity for growth and peaks: demand models from business drivers, measured saturation points, scaling plans, quotas, and cost.",
+      "Listo. Capacidad basada en límites medidos y escenarios de falla en el pico.",
+      tools=(R, W, S, WEB), write=["docs/**", "reports/**", "capacity/**"],
+      allow=["aws service-quotas get-*", "aws service-quotas list-*", "aws cloudwatch get-metric-data*",
+             "aws cloudwatch get-metric-statistics*"] + K8S_READ,
+      ask=["aws service-quotas request-service-quota-increase*"])
+
+# ─── IaC ───────────────────────────────────────────────────────────────────────
+IAC_DENY_EXTRA = ["terraform state *", "tofu apply*", "tofu destroy*"]
+agent("terraform-engineer",
+      "Writes and reviews Terraform/OpenTofu: modules, remote locked state, plan review of replacements, pinning, testing, and CI with policy checks.",
+      "Listo. fmt, validate, plan y tests libres; apply y destroy están bloqueados.",
+      write=["infra/**", "terraform/**", "modules/**", "**/*.tf", "**/*.tfvars.example", "docs/**"],
+      allow=TF_READ + ["terraform test*", "terraform show*", "terraform providers*", "tflint*", "checkov *", "trivy config*",
+                       "tofu fmt -check*", "tofu validate*", "tofu plan*", "tofu test*"],
+      ask=["terraform init*", "tofu init*"], deny=IAC_DENY_EXTRA)
+agent("aws-cdk-engineer",
+      "Builds AWS infrastructure with CDK v2 (TypeScript/Python): stacks and constructs, grant-based IAM, cdk-nag, assertions, and diff-reviewed delivery.",
+      "Listo. synth, diff y tests libres; deploy pide confirmación y destroy está bloqueado.",
+      write=["lib/**", "bin/**", "src/**", "test/**", "cdk.json", "docs/**"],
+      allow=["cdk synth*", "cdk diff*", "cdk ls*", "cdk doctor*"] + JS_CHECKS + PY_CHECKS,
+      ask=["cdk deploy*", "cdk bootstrap*"] + INSTALL_ASK, deny=["cdk destroy*"])
+agent("cloudformation-engineer",
+      "Writes and reviews CloudFormation and SAM: parameters and conditions, change sets, retain policies, StackSets, cfn-lint and Guard.",
+      "Listo. Lint, Guard y creación de change sets libres; ejecutarlos pide confirmación y borrar stacks está bloqueado.",
+      write=["templates/**", "cloudformation/**", "**/*.template.yaml", "template.yaml", "docs/**"],
+      allow=["cfn-lint*", "cfn-guard *", "sam validate*", "aws cloudformation validate-template*",
+             "aws cloudformation describe-*", "aws cloudformation list-*", "aws cloudformation get-*",
+             "aws cloudformation create-change-set*"],
+      ask=["aws cloudformation execute-change-set*", "aws cloudformation deploy*", "sam deploy*"],
+      deny=["aws cloudformation delete-stack*", "aws cloudformation delete-stack-set*", "sam delete*"])
+agent("ansible-automation",
+      "Writes and reviews Ansible playbooks, roles, and collections: idempotency, check mode, rolling execution, Vault secrets, and Molecule tests.",
+      "Listo. Lint y --check libres; ejecutar playbooks pide confirmación.",
+      write=["ansible/**", "playbooks/**", "roles/**", "inventories/**", "collections/**", "docs/**"],
+      allow=["ansible-lint*", "yamllint*", "ansible-playbook * --check*", "ansible-playbook * --syntax-check*",
+             "ansible-inventory --list*", "molecule test*", "molecule lint*"],
+      ask=["ansible-playbook *", "ansible *", "molecule converge*"],
+      deny=["ansible-vault view*", "ansible-vault decrypt*"])
+
+# ─── IAM multicloud ────────────────────────────────────────────────────────────
+agent("azure-entra-iam",
+      "Secures Microsoft Entra ID and Azure RBAC: Conditional Access, phishing-resistant MFA, PIM, managed identities, app registrations, and least privilege.",
+      "Listo. Análisis de identidades y roles en modo lectura; asignar o quitar roles está bloqueado.",
+      tools=(R, W, S, WEB), write=["infra/**", "docs/**", "reports/**"],
+      allow=["az ad * list*", "az ad * show*", "az role assignment list*", "az role definition list*", "az account show*"] + TF_READ,
+      deny=["az role assignment create*", "az role assignment delete*", "az ad * delete*", "az ad app credential reset*",
+            "az ad sp credential reset*"])
+agent("gcp-iam",
+      "Secures Google Cloud IAM: hierarchy bindings, no basic roles, keyless service accounts with Workload Identity Federation, PAM, and Recommender.",
+      "Listo. Análisis de IAM en modo lectura; cambiar políticas o crear llaves está bloqueado.",
+      tools=(R, W, S, WEB), write=["infra/**", "terraform/**", "docs/**", "reports/**"],
+      allow=["gcloud * get-iam-policy*", "gcloud iam * list*", "gcloud iam * describe*", "gcloud recommender * list*",
+             "gcloud asset analyze-iam-policy*"] + TF_READ,
+      deny=["gcloud * set-iam-policy*", "gcloud * add-iam-policy-binding*", "gcloud * remove-iam-policy-binding*",
+            "gcloud iam service-accounts keys create*"])
+agent("multicloud-iam",
+      "Designs one identity model across AWS, Azure, GCP, OCI, and IBM Cloud: single IdP federation, role mapping, workload federation, JIT, and central audit.",
+      "Listo. Un modelo de identidad coherente entre nubes; todo análisis en modo lectura.",
+      tools=(R, W, S, WEB), write=["docs/**", "reports/**", "infra/**"],
+      allow=["aws iam list-*", "aws iam get-*", "aws sso-admin list-*", "az role assignment list*", "az ad * list*",
+             "gcloud * get-iam-policy*", "oci iam * list*", "ibmcloud iam * list*"],
+      deny=["aws iam create-*", "aws iam put-*", "aws iam attach-*", "az role assignment create*",
+            "gcloud * set-iam-policy*", "oci iam * create*", "ibmcloud iam * create*"])
+
+# ─── Serverless y mensajería ───────────────────────────────────────────────────
+agent("azure-functions",
+      "Designs and reviews Azure Functions and Azure serverless: hosting plans, triggers and bindings, Durable Functions, identity-based connections, monitoring.",
+      "Listo. Lectura de Azure y pruebas locales libres; publicar funciones pide confirmación.",
+      tools=(R, W, S, WEB), write=["src/**", "functions/**", "infra/**", "bicep/**", "tests/**", "docs/**"],
+      allow=AZ_READ + ["func --version*"] + JS_CHECKS + PY_CHECKS + ["dotnet build*", "dotnet test*"],
+      ask=["func azure functionapp publish*", "func start*", "az functionapp deploy*"],
+      deny=["az functionapp delete*", "az * delete*"])
+agent("gcp-serverless",
+      "Designs and reviews Google Cloud serverless: Cloud Run services/jobs/functions, Pub/Sub, Eventarc, Workflows, Cloud Tasks, and IAM-based invocation.",
+      "Listo. Lectura de Google Cloud libre; desplegar servicios pide confirmación.",
+      tools=(R, W, S, WEB), write=["src/**", "infra/**", "terraform/**", "tests/**", "docs/**"],
+      allow=GCP_READ + JS_CHECKS + PY_CHECKS,
+      ask=["gcloud run deploy*", "gcloud run services update*", "gcloud functions deploy*", "gcloud pubsub * create*"],
+      deny=["gcloud * delete*"])
+agent("rabbitmq-specialist",
+      "Designs and operates RabbitMQ: exchanges and routing, quorum queues and streams, publisher confirms, acks, dead-lettering, and monitoring.",
+      "Listo. Inspección del broker libre; cambiar topología pide confirmación y purgar o borrar colas está bloqueado.",
+      tools=(R, W, S, WEB), write=["src/**", "definitions/**", "infra/**", "docs/**"],
+      allow=["rabbitmqctl list_*", "rabbitmqctl status*", "rabbitmqctl cluster_status*", "rabbitmq-diagnostics *",
+             "rabbitmqadmin list *", "aws mq describe-*", "aws mq list-*"],
+      ask=["rabbitmqadmin declare *", "rabbitmqctl set_policy*", "rabbitmqctl add_user*", "rabbitmqctl set_permissions*"],
+      deny=["rabbitmqctl purge_queue*", "rabbitmqctl delete_*", "rabbitmqadmin delete *", "rabbitmqadmin purge *",
+            "rabbitmqctl reset*", "aws mq delete-*"])
+agent("aws-messaging",
+      "Chooses and configures AWS messaging: SQS (standard/FIFO), SNS, EventBridge, Kinesis, Amazon MQ, and MSK with DLQs, idempotency, and security.",
+      "Listo. Lectura de colas y buses libre; enviar mensajes o cambiar configuración pide confirmación.",
+      tools=(R, W, S, WEB), write=["infra/**", "terraform/**", "lib/**", "src/**", "docs/**"],
+      allow=["aws sqs get-queue-attributes*", "aws sqs list-*", "aws sns list-*", "aws sns get-*", "aws events list-*",
+             "aws events describe-*", "aws kinesis describe-*", "aws kinesis list-*"] + TF_READ,
+      ask=["aws sqs send-message*", "aws sns publish*", "aws events put-events*", "aws sqs set-queue-attributes*",
+           "aws events put-rule*", "aws sqs start-message-move-task*"],
+      deny=["aws sqs purge-queue*", "aws sqs delete-*", "aws sns delete-*", "aws events delete-*", "aws kinesis delete-*"])
+
+# ─── Sistemas operativos y parcheo ─────────────────────────────────────────────
+agent("linux-security-hardening",
+      "Hardens Linux against CIS Benchmarks and STIGs: SSH/SSM access, attack surface, kernel and MAC (SELinux/AppArmor), auditd, FIM, and automation.",
+      "Listo. Auditoría con OpenSCAP/Lynis libre; aplicar cambios al sistema pide confirmación y sudo está bloqueado.",
+      tools=(R, W, S, WEB), write=["ansible/**", "roles/**", "playbooks/**", "image-builder/**", "packer/**", "docs/**", "reports/**"],
+      allow=["lynis audit*", "oscap *", "ansible-lint*", "ansible-playbook * --check*", "sestatus*", "getenforce*",
+             "aa-status*", "ss -*", "systemctl list-*", "systemctl status *"],
+      ask=["ansible-playbook *", "systemctl restart *", "systemctl disable *"])
+agent("windows-server",
+      "Administers and hardens Windows Server: PowerShell automation, IIS, Group Policy baselines, updates, clustering, and EC2/Azure specifics.",
+      "Listo. Diagnóstico en modo lectura; los cambios se entregan como scripts con -WhatIf para que los ejecutes tú.",
+      tools=(R, W, S, WEB), write=["scripts/**", "dsc/**", "gpo/**", "docs/**", "runbooks/**"],
+      allow=["Invoke-ScriptAnalyzer*", "Get-*", "aws ssm describe-*", "aws ssm list-*"],
+      ask=["Set-*", "Install-*", "Enable-*", "Disable-*", "Restart-*", "Invoke-Command*", "aws ssm send-command*"],
+      deny=["Remove-*", "Format-*", "Clear-*", "Stop-Computer*", "Restart-Computer*"])
+agent("active-directory",
+      "Secures Active Directory and hybrid identity: tiering, Kerberoasting, delegation, AD CS, ACL attack paths, LAPS, gMSA, and monitoring.",
+      "Listo. Análisis de rutas de ataque en modo lectura; la recolección ofensiva requiere autorización y confirmación.",
+      tools=(R, W, S, WEB), write=["docs/**", "reports/**", "scripts/**"],
+      allow=["Get-AD*", "Get-GPO*", "Get-GPResultantSetOfPolicy*"],
+      ask=["SharpHound*", "bloodhound-python*", "certipy find*", "Set-AD*", "New-AD*"],
+      deny=["Remove-AD*", "Disable-AD*", "Reset-*Password*", "certipy req*", "certipy auth*"])
+agent("patch-management",
+      "Runs risk-based patch management: SLAs by exploitation, rings, pre/post checks, automation with SSM Patch Manager, Azure Update Manager, WSUS, Ansible.",
+      "Listo. Cumplimiento y planes de parcheo en modo lectura; desplegar parches pide confirmación.",
+      tools=(R, W, S, WEB), write=["docs/**", "reports/**", "ansible/**", "playbooks/**", "infra/**"],
+      allow=["aws ssm describe-*", "aws ssm list-*", "aws ssm get-*", "aws inspector2 list-*", "az * list*", "az * show*",
+             "ansible-playbook * --check*"],
+      ask=["aws ssm send-command*", "aws ssm start-automation-execution*", "ansible-playbook *",
+           "aws ssm create-maintenance-window*"],
+      deny=["aws ssm delete-*", "aws ssm deregister-*"])
+
+# ─── Videojuegos, sonido y 3D ──────────────────────────────────────────────────
+agent("unity-game-developer",
+      "Builds and reviews Unity games in C#: component architecture, ScriptableObjects, allocation-free gameplay code, profiling, Addressables, and builds.",
+      "Listo. Revisamos código y rendimiento con evidencia del profiler.",
+      write=["Assets/**", "Packages/manifest.json", "ProjectSettings/**", "docs/**"],
+      allow=["dotnet format --verify-no-changes*"],
+      ask=["Unity *", "unity-editor *", "*/Unity -batchmode*"])
+agent("unreal-engine-developer",
+      "Builds and reviews Unreal Engine 5 projects in C++ and Blueprints: gameplay framework, GAS, replication, Nanite/Lumen, and Unreal Insights.",
+      "Listo. Revisamos gameplay, red y rendimiento; compilar el proyecto pide confirmación.",
+      write=["Source/**", "Config/**", "Plugins/**", "docs/**"],
+      ask=["*/RunUAT.sh*", "*/RunUAT.bat*", "*/Build.sh*", "UnrealEditor-Cmd*"])
+agent("game-designer",
+      "Designs game systems, mechanics, progression, economies, and levels; writes GDDs, balances with spreadsheets, plans playtests, and respects players.",
+      "Listo. Diseño de juego validado con playtests, con economías justas y accesibilidad desde el inicio.",
+      **dict(DOCS_ONLY, write=["docs/**", "design/**", "balance/**"]))
+agent("game-audio-designer",
+      "Designs and implements interactive game audio with FMOD, Wwise, MetaSounds, and Unity Audio: SFX, adaptive music, mixing, and platform budgets.",
+      "Listo. Audio interactivo con presupuestos de memoria y CPU por plataforma.",
+      tools=(R, W, S, WEB), write=["docs/**", "audio/**", "Assets/Audio/**", "Content/Audio/**"],
+      allow=["ffprobe *", "sox --i *"],
+      ask=["ffmpeg *", "sox *"])
+agent("audio-engineering",
+      "Guides recording, mixing, mastering, and delivery to loudness standards, and helps developers with digital audio and DSP fundamentals.",
+      "Listo. Medimos loudness y true peak; procesar archivos pide confirmación para no sobrescribir originales.",
+      tools=(R, W, S, WEB), write=["docs/**", "audio/**", "exports/**"],
+      allow=["ffprobe *", "sox --i *", "ffmpeg -i * -af ebur128* -f null*"],
+      ask=["ffmpeg *", "sox *"])
+agent("3d-modeling",
+      "Guides 3D modeling for games, web, and print: topology, UVs, PBR texturing, baking, LODs, budgets, and export to engines and glTF.",
+      "Listo. Assets con presupuestos definidos y validados en el motor de destino.",
+      tools=(R, W, S, WEB), write=["docs/**", "art/**", "assets/**", "scripts/**"],
+      allow=["gltf-validator*", "npx gltf-validator*", "npx @gltf-transform/cli inspect*"],
+      ask=["blender -b*", "blender --background*", "npx @gltf-transform/cli *"])
+agent("technical-artist",
+      "Bridges art and engineering: shaders and materials, DCC and engine tools, procedural content, rigging support, and GPU performance budgets.",
+      "Listo. Shaders y herramientas medidos en hardware objetivo, con controles simples para artistas.",
+      tools=(R, W, S, WEB), write=["Assets/**", "Content/**", "Shaders/**", "tools/**", "scripts/**", "docs/**"],
+      allow=["python -m py_compile*", "ruff check*"],
+      ask=["blender -b*", "blender --background*", "hython *"])
+
+# ─── Blockchain ────────────────────────────────────────────────────────────────
+agent("blockchain-protocol-engineer",
+      "Core blockchain protocol engineering: consensus, P2P networking, execution and state, rollups and data availability, client implementation in Go/Rust.",
+      "Listo. Código crítico de consenso con pruebas exhaustivas; nodos locales y devnets piden confirmación.",
+      tools=(R, W, S, WEB), write=["src/**", "crates/**", "cmd/**", "internal/**", "pkg/**", "specs/**", "tests/**", "docs/**"],
+      allow=["go test*", "go vet*", "go build*", "cargo test*", "cargo check*", "cargo clippy*", "golangci-lint run*"],
+      ask=["geth *", "reth *", "anvil*", "kurtosis *", "docker compose up*"],
+      deny=["cast send*", "geth * --mainnet*"])
+agent("smart-contract-engineer",
+      "Builds production smart contracts in Solidity/Vyper with Foundry and Hardhat: OpenZeppelin reuse, fuzz and invariant tests, gas, upgrades, safe deployment.",
+      "Listo. Compilar y probar en local es libre; desplegar en testnet pide confirmación y mainnet está bloqueado.",
+      tools=(R, W, S, WEB), write=["src/**", "contracts/**", "test/**", "script/**", "foundry.toml", "hardhat.config.*", "docs/**"],
+      allow=["forge build*", "forge test*", "forge coverage*", "forge fmt*", "forge snapshot*", "slither *", "aderyn *",
+             "solhint *", "npx hardhat compile*", "npx hardhat test*"],
+      ask=["anvil*", "forge script*", "npx hardhat run*", "forge verify-contract*"],
+      deny=["forge script * --broadcast --rpc-url *mainnet*", "cast send*", "cast wallet *", "npx hardhat run * --network mainnet*"])
+agent("dapp-web3-developer",
+      "Builds dApp front ends and backends with wagmi, viem, ethers, WalletConnect, SIWE, indexers, and account abstraction, with safe transaction UX.",
+      "Listo. Desarrollo contra cadenas locales y testnets; enviar transacciones a mainnet está bloqueado.",
+      tools=(R, W, S, WEB), write=FRONT_WRITE + ["subgraph/**", "indexer/**", "abis/**"],
+      allow=JS_CHECKS + ["npx playwright test*", "graph codegen*", "graph build*"],
+      ask=INSTALL_ASK + ["anvil*", "npm run dev*", "graph deploy*"],
+      deny=["cast send*", "cast wallet *"])
+
 # Orquestador (se define al final para conocer a todos los demás)
 specialists = sorted(A.keys())
 agent("agent-orchestrator",

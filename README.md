@@ -1,10 +1,10 @@
 # ITera Agent Suite
 
-> **97 agentes especializados para todo el ciclo de tecnología: requerimientos, arquitectura, desarrollo, QA, ciberseguridad, IAM, FinOps, multicloud (AWS, Azure, GCP, IBM, OCI), datos e IA, gestión de proyectos, liderazgo y blockchain — coordinados por un agente orquestador.**
+> **175 agentes especializados: requerimientos, arquitectura, desarrollo (web, backend, mobile, 10+ lenguajes), QA, ciberseguridad, IAM multicloud, DevOps/DevSecOps, IaC, observabilidad y SRE, bases de datos, datos e IA, FinOps, multicloud (AWS, Azure, GCP, IBM, OCI), regulación y derecho, RRHH, gestión y liderazgo, videojuegos, audio y 3D, y blockchain — coordinados por un agente orquestador.**
 > Compatibles con Kiro IDE y Claude (web/API/Projects).
 
 **Creado por**: Stiven Avila | **Organización**: ITera
-**Versión**: 3.0.0 | **Fecha**: 2026-11-12
+**Versión**: 4.0.0 | **Fecha**: 2026-11-12
 
 ---
 
@@ -209,6 +209,169 @@
 | 93 | **Smart Contract Security** | Auditoría Solidity/EVM: reentrancy, oráculos, flash loans, PoCs | `.kiro/agents/smart-contract-security/` |
 | 94 | **Blockchain Architecture** | Si blockchain aplica; plataforma, custodia, tokenización, cumplimiento | `.kiro/agents/blockchain-architecture/` |
 
+### Contenedores & Docker
+
+| # | Agente | Descripción | Kiro Path |
+|---|--------|-------------|-----------|
+| 95 | **Docker Engineering** | Dockerfiles multi-stage, Compose, BuildKit, imágenes multi-arch | `.kiro/agents/docker-engineering/` |
+| 96 | **AWS ECS & Fargate** | Task definitions, servicios, despliegues, autoscaling | `.kiro/agents/aws-ecs-fargate/` |
+
+### Más Lenguajes
+
+| # | Agente | Descripción | Kiro Path |
+|---|--------|-------------|-----------|
+| 97 | **Rust** | Ownership, errores, Tokio, unsafe justificado | `.kiro/agents/rust-developer/` |
+| 98 | **PHP & Laravel** | Eloquent sin N+1, Form Requests, policies, colas | `.kiro/agents/php-laravel-developer/` |
+| 99 | **Ruby on Rails** | Active Record, migraciones seguras, Brakeman | `.kiro/agents/ruby-rails-developer/` |
+| 100 | **C++** | RAII, undefined behavior, sanitizers, CMake | `.kiro/agents/cpp-developer/` |
+
+### Requerimientos & Especificaciones
+
+| # | Agente | Descripción | Kiro Path |
+|---|--------|-------------|-----------|
+| 101 | **Business Process Analyst** | BPMN/DMN, procesos as-is/to-be, KPIs | `.kiro/agents/business-process-analyst/` |
+| 102 | **Technical Specification Writer** | Especificaciones funcionales, SRS, interfaces | `.kiro/agents/technical-specification-writer/` |
+
+### Regulación & Derecho
+
+| # | Agente | Descripción | Kiro Path |
+|---|--------|-------------|-----------|
+| 103 | **PCI DSS** | Alcance del CDE, brechas y evidencia PCI DSS v4.0.1 | `.kiro/agents/pci-dss-compliance/` |
+| 104 | **ISO/IEC 27001 (SGSI)** | Riesgos, SoA con Anexo A, auditorías, certificación | `.kiro/agents/iso27001-isms/` |
+| 105 | **Regulación Financiera Colombia (SFC)** | Ciberseguridad, nube, tercerización, incidentes | `.kiro/agents/colombia-financial-regulation/` |
+| 106 | **AI Governance** | EU AI Act, ISO/IEC 42001, NIST AI RMF | `.kiro/agents/ai-governance/` |
+| 107 | **Contratos de Tecnología** | MSA, SOW, SaaS, SLA, DPA, NDA (no es asesoría legal) | `.kiro/agents/tech-contracts-legal/` |
+| 108 | **Licencias Open Source** | Obligaciones, compatibilidad, avisos de terceros | `.kiro/agents/open-source-licensing/` |
+| 109 | **Derecho Laboral Colombiano** | Contratos, jornada, prestaciones, nómina, reglas de software | `.kiro/agents/colombian-labor-law/` |
+
+### Recursos Humanos
+
+| # | Agente | Descripción | Kiro Path |
+|---|--------|-------------|-----------|
+| 110 | **Technical Recruiter** | Contratación técnica estructurada y justa | `.kiro/agents/technical-recruiter/` |
+| 111 | **People Operations (HRBP)** | Onboarding, desempeño, compensación, políticas | `.kiro/agents/people-operations/` |
+| 112 | **Learning & Development** | Rutas de aprendizaje y certificaciones | `.kiro/agents/learning-development/` |
+
+### DevOps & DevSecOps Especializado
+
+| # | Agente | Descripción | Kiro Path |
+|---|--------|-------------|-----------|
+| 113 | **GitHub Actions** | Workflows seguros, OIDC, entornos protegidos | `.kiro/agents/github-actions-cicd/` |
+| 114 | **GitLab CI/CD** | Pipelines DAG, componentes, escáneres, entornos | `.kiro/agents/gitlab-cicd/` |
+| 115 | **GitOps & Argo CD** | ApplicationSets, promoción, Argo Rollouts | `.kiro/agents/gitops-argocd/` |
+| 116 | **Policy as Code** | OPA/Rego, Kyverno, Gatekeeper, Checkov, Sentinel | `.kiro/agents/policy-as-code/` |
+| 117 | **SCA** | Análisis de composición de software y dependencias | `.kiro/agents/sca-security/` |
+| 118 | **API Security Testing (DAST)** | OWASP API Top 10 en APIs autorizadas | `.kiro/agents/api-security-testing/` |
+
+### Migración
+
+| # | Agente | Descripción | Kiro Path |
+|---|--------|-------------|-----------|
+| 119 | **Database Migration** | Cambio de motor o plataforma con CDC, validación y cutover | `.kiro/agents/database-migration/` |
+| 120 | **Mainframe Modernization** | COBOL/CICS/IMS/Db2 con corridas en paralelo | `.kiro/agents/mainframe-modernization/` |
+
+### Machine Learning & Datos
+
+| # | Agente | Descripción | Kiro Path |
+|---|--------|-------------|-----------|
+| 121 | **Machine Learning Engineer** | Modelos de ML sin fugas, contra baseline, reproducibles | `.kiro/agents/machine-learning-engineer/` |
+| 122 | **Data Scientist** | EDA, estadística, A/B tests, inferencia causal | `.kiro/agents/data-scientist/` |
+| 123 | **Data Governance** | Dueños, catálogo, calidad, clasificación, MDM | `.kiro/agents/data-governance/` |
+| 124 | **Data Warehouse** | Redshift, Snowflake, BigQuery, modelado dimensional, dbt | `.kiro/agents/data-warehouse/` |
+| 125 | **Kafka & Streaming** | Topics, productores, consumidores, esquemas | `.kiro/agents/kafka-streaming/` |
+
+### Bases de Datos por Motor
+
+| # | Agente | Descripción | Kiro Path |
+|---|--------|-------------|-----------|
+| 126 | **PostgreSQL** | Diseño, EXPLAIN, autovacuum, migraciones seguras | `.kiro/agents/postgresql-specialist/` |
+| 127 | **MongoDB** | Modelado por patrones de acceso, índices ESR, sharding | `.kiro/agents/mongodb-specialist/` |
+| 128 | **DynamoDB** | Diseño de llaves, GSIs, particiones calientes | `.kiro/agents/dynamodb-specialist/` |
+| 129 | **Redis / Valkey** | Caché, estructuras, eviction, clúster | `.kiro/agents/redis-specialist/` |
+| 130 | **SQL Server DBA** | Planes, Query Store, Always On, backups | `.kiro/agents/sql-server-dba/` |
+| 131 | **Oracle Database** | AWR/ASH, RAC, Data Guard, RMAN, licenciamiento | `.kiro/agents/oracle-database/` |
+
+### Frontend, Backend & Mobile
+
+| # | Agente | Descripción | Kiro Path |
+|---|--------|-------------|-----------|
+| 132 | **React** | Hooks, estado, rendimiento, Testing Library | `.kiro/agents/react-developer/` |
+| 133 | **Angular** | Signals, standalone, RxJS, OnPush | `.kiro/agents/angular-developer/` |
+| 134 | **Vue & Nuxt** | Composition API, Pinia, SSR | `.kiro/agents/vue-developer/` |
+| 135 | **Next.js** | App Router, Server Actions, caché | `.kiro/agents/nextjs-developer/` |
+| 136 | **Backend Engineering** | Diseño backend independiente del lenguaje | `.kiro/agents/backend-engineering/` |
+| 137 | **GraphQL** | Esquemas, DataLoader, autorización por campo, federación | `.kiro/agents/graphql-api/` |
+| 138 | **iOS (Swift/SwiftUI)** | Concurrencia, Keychain, privacidad, accesibilidad | `.kiro/agents/ios-developer/` |
+| 139 | **Android (Kotlin/Compose)** | Arquitectura, coroutines, Room, Play Store | `.kiro/agents/android-developer/` |
+| 140 | **React Native & Expo** | New Architecture, EAS, OTA updates | `.kiro/agents/react-native-developer/` |
+| 141 | **Flutter** | Riverpod/Bloc, go_router, rendimiento | `.kiro/agents/flutter-developer/` |
+
+### Observabilidad & SRE Especializado
+
+| # | Agente | Descripción | Kiro Path |
+|---|--------|-------------|-----------|
+| 142 | **OpenTelemetry** | Instrumentación, propagación de contexto, Collector | `.kiro/agents/opentelemetry/` |
+| 143 | **Prometheus & Grafana** | PromQL, alertas, dashboards como código | `.kiro/agents/prometheus-grafana/` |
+| 144 | **AWS CloudWatch** | Alarmas por percentiles, Logs Insights, canaries | `.kiro/agents/aws-cloudwatch/` |
+| 145 | **Chaos Engineering** | Experimentos con hipótesis y condiciones de parada | `.kiro/agents/chaos-engineering/` |
+| 146 | **Incident Management & On-Call** | Severidades, guardias, postmortems | `.kiro/agents/incident-management-oncall/` |
+| 147 | **Capacity Planning** | Demanda, saturación, escalamiento, cuotas | `.kiro/agents/capacity-planning/` |
+
+### Infraestructura como Código
+
+| # | Agente | Descripción | Kiro Path |
+|---|--------|-------------|-----------|
+| 148 | **Terraform / OpenTofu** | Módulos, estado remoto, revisión de planes | `.kiro/agents/terraform-engineer/` |
+| 149 | **AWS CDK** | Stacks, constructs, cdk-nag, assertions | `.kiro/agents/aws-cdk-engineer/` |
+| 150 | **CloudFormation & SAM** | Change sets, StackSets, Guard | `.kiro/agents/cloudformation-engineer/` |
+| 151 | **Ansible** | Playbooks idempotentes, Molecule, Vault | `.kiro/agents/ansible-automation/` |
+
+### IAM Multicloud
+
+| # | Agente | Descripción | Kiro Path |
+|---|--------|-------------|-----------|
+| 152 | **Azure & Entra ID IAM** | Conditional Access, PIM, RBAC, identidades administradas | `.kiro/agents/azure-entra-iam/` |
+| 153 | **Google Cloud IAM** | Sin roles básicos, cuentas de servicio sin llaves | `.kiro/agents/gcp-iam/` |
+| 154 | **Multi-Cloud IAM** | Un modelo de identidad para AWS, Azure, GCP, OCI e IBM | `.kiro/agents/multicloud-iam/` |
+
+### Serverless & Colas
+
+| # | Agente | Descripción | Kiro Path |
+|---|--------|-------------|-----------|
+| 155 | **Azure Functions** | Planes, triggers, Durable Functions | `.kiro/agents/azure-functions/` |
+| 156 | **Google Cloud Serverless** | Cloud Run, Pub/Sub, Eventarc, Workflows | `.kiro/agents/gcp-serverless/` |
+| 157 | **RabbitMQ** | Exchanges, quorum queues, confirms, dead-lettering | `.kiro/agents/rabbitmq-specialist/` |
+| 158 | **AWS Messaging** | SQS, SNS, EventBridge, Kinesis, Amazon MQ | `.kiro/agents/aws-messaging/` |
+
+### Sistemas Operativos & Parcheo
+
+| # | Agente | Descripción | Kiro Path |
+|---|--------|-------------|-----------|
+| 159 | **Linux Hardening** | CIS/STIG, SELinux/AppArmor, auditd | `.kiro/agents/linux-security-hardening/` |
+| 160 | **Windows Server** | PowerShell, IIS, GPO, baselines | `.kiro/agents/windows-server/` |
+| 161 | **Active Directory Security** | Tiering, Kerberoasting, AD CS, LAPS | `.kiro/agents/active-directory/` |
+| 162 | **Patch Management** | Parcheo por riesgo con anillos y automatización | `.kiro/agents/patch-management/` |
+
+### Videojuegos, Audio & 3D
+
+| # | Agente | Descripción | Kiro Path |
+|---|--------|-------------|-----------|
+| 163 | **Unity Game Developer** | C#, arquitectura por componentes, profiling | `.kiro/agents/unity-game-developer/` |
+| 164 | **Unreal Engine Developer** | C++/Blueprints, GAS, replicación | `.kiro/agents/unreal-engine-developer/` |
+| 165 | **Game Designer** | Sistemas, progresión, economías, playtests | `.kiro/agents/game-designer/` |
+| 166 | **Game Audio Designer** | FMOD, Wwise, MetaSounds, música adaptativa | `.kiro/agents/game-audio-designer/` |
+| 167 | **Audio Engineering** | Grabación, mezcla, mastering, loudness, DSP | `.kiro/agents/audio-engineering/` |
+| 168 | **3D Modeling** | Topología, UVs, PBR, LODs, exportación | `.kiro/agents/3d-modeling/` |
+| 169 | **Technical Artist** | Shaders, herramientas, contenido procedural | `.kiro/agents/technical-artist/` |
+
+### Blockchain Engineering
+
+| # | Agente | Descripción | Kiro Path |
+|---|--------|-------------|-----------|
+| 170 | **Ingeniero de Protocolo (Core Blockchain Developer)** | Consenso, P2P, ejecución, estado, rollups | `.kiro/agents/blockchain-protocol-engineer/` |
+| 171 | **Smart Contract Engineer** | Solidity/Vyper con Foundry, fuzzing, despliegue seguro | `.kiro/agents/smart-contract-engineer/` |
+| 172 | **dApp & Web3 Developer** | wagmi, viem, wallets, SIWE, indexadores | `.kiro/agents/dapp-web3-developer/` |
+
 ### ¿Por dónde empezar?
 
 - **No sabes qué agente usar** → `agent-orchestrator`: arma el plan y coordina a los demás.
@@ -242,7 +405,7 @@ Cada agente solo tiene las herramientas y permisos que su función necesita:
 | `shell` → `allow` | Comandos de solo lectura y análisis de su dominio (`git diff`, `terraform plan`, `kubectl get`, linters, tests, escáneres) |
 | `shell` → `ask` | Lo que cambia algo pide confirmación: commits, push, instalar dependencias, `kubectl apply`, pruebas de carga, escaneos activos |
 | `shell` → `deny` | Bloqueado siempre: `terraform apply/destroy`, `kubectl delete`, leer Secrets de K8s, `git push --force`, `git reset --hard`, `rm -rf`, `sudo`, borrar recursos de AWS, publicar imágenes o paquetes |
-| `subagent` → `allow` | Solo el **Agent Orchestrator**: puede invocar a los otros 96 agentes |
+| `subagent` → `allow` | Solo el **Agent Orchestrator**: puede invocar a los otros 174 agentes |
 
 En Kiro un `deny` siempre gana sobre un `allow`. Lo que no coincide con ninguna regla pide aprobación en tiempo de ejecución.
 
@@ -347,32 +510,60 @@ done
 ```
 .
 ├── .kiro/
-│   └── agents/                          # 97 agentes: <agente>.json (config Kiro) + <agente>/agent.md (prompt)
+│   └── agents/                          # 175 agentes: <agente>.json (config Kiro) + <agente>/agent.md (prompt)
+│       ├── 3d-modeling.json + 3d-modeling/agent.md
 │       ├── accessibility.json + accessibility/agent.md
+│       ├── active-directory.json + active-directory/agent.md
 │       ├── agent-orchestrator.json + agent-orchestrator/agent.md
 │       ├── ai-agent-developer.json + ai-agent-developer/agent.md
+│       ├── ai-governance.json + ai-governance/agent.md
 │       ├── ai-llm-security.json + ai-llm-security/agent.md
 │       ├── analytics-bi.json + analytics-bi/agent.md
+│       ├── android-developer.json + android-developer/agent.md
+│       ├── angular-developer.json + angular-developer/agent.md
+│       ├── ansible-automation.json + ansible-automation/agent.md
 │       ├── api-design.json + api-design/agent.md
+│       ├── api-security-testing.json + api-security-testing/agent.md
 │       ├── api-testing.json + api-testing/agent.md
+│       ├── audio-engineering.json + audio-engineering/agent.md
 │       ├── aws-best-practices.json + aws-best-practices/agent.md
+│       ├── aws-cdk-engineer.json + aws-cdk-engineer/agent.md
+│       ├── aws-cloudwatch.json + aws-cloudwatch/agent.md
+│       ├── aws-ecs-fargate.json + aws-ecs-fargate/agent.md
 │       ├── aws-landing-zone.json + aws-landing-zone/agent.md
+│       ├── aws-messaging.json + aws-messaging/agent.md
 │       ├── aws-migration-map.json + aws-migration-map/agent.md
 │       ├── aws-networking.json + aws-networking/agent.md
 │       ├── aws-organizations-iam.json + aws-organizations-iam/agent.md
 │       ├── aws-serverless.json + aws-serverless/agent.md
 │       ├── azure-architect.json + azure-architect/agent.md
+│       ├── azure-entra-iam.json + azure-entra-iam/agent.md
+│       ├── azure-functions.json + azure-functions/agent.md
+│       ├── backend-engineering.json + backend-engineering/agent.md
 │       ├── blockchain-architecture.json + blockchain-architecture/agent.md
+│       ├── blockchain-protocol-engineer.json + blockchain-protocol-engineer/agent.md
+│       ├── business-process-analyst.json + business-process-analyst/agent.md
+│       ├── capacity-planning.json + capacity-planning/agent.md
+│       ├── chaos-engineering.json + chaos-engineering/agent.md
 │       ├── cloud-cost-forecasting.json + cloud-cost-forecasting/agent.md
 │       ├── cloud-security.json + cloud-security/agent.md
+│       ├── cloudformation-engineer.json + cloudformation-engineer/agent.md
 │       ├── code-reviewer.json + code-reviewer/agent.md
+│       ├── colombia-financial-regulation.json + colombia-financial-regulation/agent.md
+│       ├── colombian-labor-law.json + colombian-labor-law/agent.md
 │       ├── commitment-management.json + commitment-management/agent.md
 │       ├── container-best-practices.json + container-best-practices/agent.md
 │       ├── container-reviewer.json + container-reviewer/agent.md
+│       ├── cpp-developer.json + cpp-developer/agent.md
 │       ├── cryptography-encryption.json + cryptography-encryption/agent.md
+│       ├── dapp-web3-developer.json + dapp-web3-developer/agent.md
 │       ├── dast-security.json + dast-security/agent.md
 │       ├── data-engineering.json + data-engineering/agent.md
+│       ├── data-governance.json + data-governance/agent.md
+│       ├── data-scientist.json + data-scientist/agent.md
+│       ├── data-warehouse.json + data-warehouse/agent.md
 │       ├── database-engineering.json + database-engineering/agent.md
+│       ├── database-migration.json + database-migration/agent.md
 │       ├── debugging-troubleshooting.json + debugging-troubleshooting/agent.md
 │       ├── detection-engineering.json + detection-engineering/agent.md
 │       ├── dev-best-practices.json + dev-best-practices/agent.md
@@ -380,70 +571,120 @@ done
 │       ├── devops-reviewer.json + devops-reviewer/agent.md
 │       ├── devsecops-reviewer.json + devsecops-reviewer/agent.md
 │       ├── disaster-recovery.json + disaster-recovery/agent.md
+│       ├── docker-engineering.json + docker-engineering/agent.md
 │       ├── dotnet-developer.json + dotnet-developer/agent.md
+│       ├── dynamodb-specialist.json + dynamodb-specialist/agent.md
 │       ├── engineering-manager.json + engineering-manager/agent.md
 │       ├── enterprise-architecture.json + enterprise-architecture/agent.md
 │       ├── event-driven-architecture.json + event-driven-architecture/agent.md
 │       ├── finops-cost-optimization.json + finops-cost-optimization/agent.md
+│       ├── flutter-developer.json + flutter-developer/agent.md
 │       ├── frontend-engineering.json + frontend-engineering/agent.md
+│       ├── game-audio-designer.json + game-audio-designer/agent.md
+│       ├── game-designer.json + game-designer/agent.md
 │       ├── gcp-architect.json + gcp-architect/agent.md
+│       ├── gcp-iam.json + gcp-iam/agent.md
+│       ├── gcp-serverless.json + gcp-serverless/agent.md
 │       ├── genai-aws-practices.json + genai-aws-practices/agent.md
 │       ├── genai-finops.json + genai-finops/agent.md
+│       ├── github-actions-cicd.json + github-actions-cicd/agent.md
+│       ├── gitlab-cicd.json + gitlab-cicd/agent.md
+│       ├── gitops-argocd.json + gitops-argocd/agent.md
 │       ├── go-developer.json + go-developer/agent.md
+│       ├── graphql-api.json + graphql-api/agent.md
 │       ├── iac-reviewer.json + iac-reviewer/agent.md
 │       ├── ibm-cloud-architect.json + ibm-cloud-architect/agent.md
 │       ├── identity-federation-sso.json + identity-federation-sso/agent.md
 │       ├── identity-governance.json + identity-governance/agent.md
+│       ├── incident-management-oncall.json + incident-management-oncall/agent.md
 │       ├── incident-response.json + incident-response/agent.md
+│       ├── ios-developer.json + ios-developer/agent.md
+│       ├── iso27001-isms.json + iso27001-isms/agent.md
 │       ├── java-spring-developer.json + java-spring-developer/agent.md
+│       ├── kafka-streaming.json + kafka-streaming/agent.md
 │       ├── kubernetes-best-practices.json + kubernetes-best-practices/agent.md
 │       ├── kubernetes-finops.json + kubernetes-finops/agent.md
 │       ├── kubernetes-security.json + kubernetes-security/agent.md
+│       ├── learning-development.json + learning-development/agent.md
 │       ├── least-privilege.json + least-privilege/agent.md
 │       ├── linux-administration.json + linux-administration/agent.md
+│       ├── linux-security-hardening.json + linux-security-hardening/agent.md
+│       ├── machine-learning-engineer.json + machine-learning-engineer/agent.md
+│       ├── mainframe-modernization.json + mainframe-modernization/agent.md
 │       ├── microservices-architecture.json + microservices-architecture/agent.md
 │       ├── mlops-engineering.json + mlops-engineering/agent.md
 │       ├── mobile-engineering.json + mobile-engineering/agent.md
 │       ├── mobile-test-automation.json + mobile-test-automation/agent.md
+│       ├── mongodb-specialist.json + mongodb-specialist/agent.md
 │       ├── multi-cloud-strategy.json + multi-cloud-strategy/agent.md
+│       ├── multicloud-iam.json + multicloud-iam/agent.md
 │       ├── network-security.json + network-security/agent.md
+│       ├── nextjs-developer.json + nextjs-developer/agent.md
 │       ├── observability-sre.json + observability-sre/agent.md
 │       ├── oci-architect.json + oci-architect/agent.md
+│       ├── open-source-licensing.json + open-source-licensing/agent.md
+│       ├── opentelemetry.json + opentelemetry/agent.md
+│       ├── oracle-database.json + oracle-database/agent.md
+│       ├── patch-management.json + patch-management/agent.md
+│       ├── pci-dss-compliance.json + pci-dss-compliance/agent.md
 │       ├── pentest-security.json + pentest-security/agent.md
+│       ├── people-operations.json + people-operations/agent.md
 │       ├── performance-engineering.json + performance-engineering/agent.md
+│       ├── php-laravel-developer.json + php-laravel-developer/agent.md
 │       ├── pki-certificates.json + pki-certificates/agent.md
 │       ├── platform-engineering.json + platform-engineering/agent.md
+│       ├── policy-as-code.json + policy-as-code/agent.md
+│       ├── postgresql-specialist.json + postgresql-specialist/agent.md
 │       ├── presales-solutions-architect.json + presales-solutions-architect/agent.md
 │       ├── privacy-compliance.json + privacy-compliance/agent.md
 │       ├── product-owner.json + product-owner/agent.md
 │       ├── project-manager.json + project-manager/agent.md
+│       ├── prometheus-grafana.json + prometheus-grafana/agent.md
 │       ├── python-developer.json + python-developer/agent.md
 │       ├── qa-lead.json + qa-lead/agent.md
 │       ├── qa-manual-testing.json + qa-manual-testing/agent.md
+│       ├── rabbitmq-specialist.json + rabbitmq-specialist/agent.md
+│       ├── react-developer.json + react-developer/agent.md
+│       ├── react-native-developer.json + react-native-developer/agent.md
+│       ├── redis-specialist.json + redis-specialist/agent.md
 │       ├── refactoring-modernization.json + refactoring-modernization/agent.md
 │       ├── release-management.json + release-management/agent.md
 │       ├── requirements-analyst.json + requirements-analyst/agent.md
+│       ├── ruby-rails-developer.json + ruby-rails-developer/agent.md
+│       ├── rust-developer.json + rust-developer/agent.md
 │       ├── sast-security.json + sast-security/agent.md
+│       ├── sca-security.json + sca-security/agent.md
 │       ├── scrum-master.json + scrum-master/agent.md
 │       ├── secrets-management.json + secrets-management/agent.md
 │       ├── secure-development.json + secure-development/agent.md
 │       ├── security-audit.json + security-audit/agent.md
 │       ├── security-tester.json + security-tester/agent.md
 │       ├── shell-scripting-automation.json + shell-scripting-automation/agent.md
+│       ├── smart-contract-engineer.json + smart-contract-engineer/agent.md
 │       ├── smart-contract-security.json + smart-contract-security/agent.md
 │       ├── software-architect.json + software-architect/agent.md
 │       ├── software-estimation.json + software-estimation/agent.md
+│       ├── sql-server-dba.json + sql-server-dba/agent.md
 │       ├── supply-chain-security.json + supply-chain-security/agent.md
 │       ├── tagging-governance.json + tagging-governance/agent.md
+│       ├── tech-contracts-legal.json + tech-contracts-legal/agent.md
 │       ├── tech-lead.json + tech-lead/agent.md
+│       ├── technical-artist.json + technical-artist/agent.md
+│       ├── technical-recruiter.json + technical-recruiter/agent.md
+│       ├── technical-specification-writer.json + technical-specification-writer/agent.md
 │       ├── technology-strategy.json + technology-strategy/agent.md
+│       ├── terraform-engineer.json + terraform-engineer/agent.md
 │       ├── test-automation.json + test-automation/agent.md
 │       ├── threat-modeling.json + threat-modeling/agent.md
 │       ├── typescript-node-developer.json + typescript-node-developer/agent.md
 │       ├── ui-ux-design.json + ui-ux-design/agent.md
+│       ├── unity-game-developer.json + unity-game-developer/agent.md
+│       ├── unreal-engine-developer.json + unreal-engine-developer/agent.md
+│       ├── vue-developer.json + vue-developer/agent.md
 │       ├── vulnerability-management.json + vulnerability-management/agent.md
 │       ├── waf-ddos-protection.json + waf-ddos-protection/agent.md
 │       ├── web-e2e-automation.json + web-e2e-automation/agent.md
+│       ├── windows-server.json + windows-server/agent.md
 │       └── yaml-best-practices.json + yaml-best-practices/agent.md
 ├── scripts/
 │   └── generate_kiro_agents.py          # genera los <agente>.json (permisos, herramientas, recursos)
@@ -485,6 +726,18 @@ Para un análisis completo, usa múltiples agentes en secuencia:
 | **Gate de calidad de release** | QA Lead → Web E2E ‖ API Testing ‖ Mobile Test Automation → Release Management |
 | **Lanzamiento de smart contracts** | Blockchain Architecture → Smart Contract Security → Release Management |
 
+| **Producto Web3** | Blockchain Architecture → Smart Contract Engineer → Smart Contract Security → dApp & Web3 Developer |
+| **Cumplimiento de pagos** | PCI DSS → Secure Development ‖ API Security Testing → ISO 27001 |
+| **Fintech regulada (Colombia)** | Regulación Financiera Colombia → Privacy by Design → ISO 27001 → Incident Management |
+| **Modernización de base de datos** | Database Migration → PostgreSQL (o motor destino) → Performance Engineering |
+| **App móvil nativa** | Requirements Analyst → iOS ‖ Android → Mobile Test Automation → Release Management |
+| **Plataforma de datos** | Data Governance → Data Warehouse ‖ Kafka & Streaming → Analytics & BI |
+| **Producto de ML** | Data Scientist → Machine Learning Engineer → MLOps → AI Governance |
+| **Pipeline de plataforma** | GitHub Actions (o GitLab CI/CD) → Policy as Code → GitOps & Argo CD → OpenTelemetry |
+| **Infraestructura base** | Terraform → Policy as Code → Linux Hardening ‖ Patch Management |
+| **Producción de videojuego** | Game Designer → Unity (o Unreal) ‖ Technical Artist ‖ Game Audio Designer |
+| **Construcción de equipo** | Technical Recruiter → People Operations → Learning & Development → Engineering Manager |
+
 > `‖` = en paralelo. El **Agent Orchestrator** conoce estas combinaciones y elige la adecuada según la solicitud.
 
 ---
@@ -517,6 +770,10 @@ Los agentes están alineados con:
 - **AWS MAP** (Migration Acceleration Program), **ISO 22301** (continuidad del negocio)
 - **Scrum Guide 2020**, **PMBOK**, **TOGAF**, **ArchiMate**, **Team Topologies**
 - **SWC Registry** y **OWASP Smart Contract Top 10**
+- **PCI DSS v4.0.1**, **ISO/IEC 27001:2022**, **EU AI Act**, **ISO/IEC 42001**, normativa **SFC** (Colombia), **Código Sustantivo del Trabajo**
+- **OWASP API Security Top 10 (2023)**, **SLSA**, **OpenSSF Scorecard**, **CIS Benchmarks** (Linux, Windows) y **DISA STIG**
+- **BPMN 2.0**, **DMN**, **ISO/IEC/IEEE 29148** (especificación de requerimientos)
+- **OpenTelemetry**, **Prometheus**, **Google SRE** (SLOs, error budgets, postmortems sin culpables)
 
 ---
 
